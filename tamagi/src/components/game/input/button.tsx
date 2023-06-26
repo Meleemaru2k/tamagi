@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 import cn from "classnames";
 
 export default function Button(props: ButtonProps) {
-  let buttonText = props.buttonText;
-  let buttonType = props.buttonType;
-  let [isLoading, setIsLoading] = useState(false);
+  const buttonText = props.buttonText;
+  const buttonType = props.buttonType;
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (isLoading) {

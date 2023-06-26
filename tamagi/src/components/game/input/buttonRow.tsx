@@ -11,7 +11,7 @@ export default function ButtonRow(props: ButtonRowProps) {
     );
   });
 
-  return <div className="flex flex-row flex-wrap gap-2"> {buttons}</div>;
+  return <div className="flex flex-row flex-wrap gap-2">{buttons}</div>;
 }
 
 type ButtonRowProps = { buttons: ButtonProps[] };
