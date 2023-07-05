@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { produce } from "immer";
 
-export const useTamagi = create<iTamagiStore>((set, get) => ({
+export const useTamagi = create<iTamagiStore>()((set, get) => ({
   tamagi: {
     name: "Jhonny McJohnface",
     age: 0,
@@ -13,9 +13,9 @@ export const useTamagi = create<iTamagiStore>((set, get) => ({
     dead: false,
   },
   //Actions
-  setHunger: (hungerValue: number) =>
+  setHunger: (hungerValue: number) => {
     set(
-      produce((state) => {
+      produce<iTamagiStore>((state) => {
         if (hungerValue < TamagiMinMax.HungerMin) {
           state.tamagi.hunger = TamagiMinMax.HungerMin;
         } else if (hungerValue > TamagiMinMax.HungerMax) {
@@ -24,7 +24,8 @@ export const useTamagi = create<iTamagiStore>((set, get) => ({
           state.tamagi.hunger = hungerValue;
         }
       })
-    ),
+    );
+  },
   increaseHunger: (hungerValue: number) => {
     const newHunger = hungerValue + get().tamagi.hunger;
     get().setHunger(newHunger);
@@ -32,6 +33,13 @@ export const useTamagi = create<iTamagiStore>((set, get) => ({
   decreaseHunger: (hungerValue: number) => {
     const newHunger = get().tamagi.hunger - hungerValue;
     get().setHunger(newHunger);
+  },
+  update: () => {
+    set(
+      produce<iTamagiStore>((state) => {
+        //Logic for updates goes here
+      })
+    );
   },
 }));
 
