@@ -1,9 +1,11 @@
 import Button from "@/components/game/input/button";
 import ButtonRow from "@/components/game/input/buttonRow";
+import Test from "@/components/test";
 export default function Page() {
   return (
     <div className="flex flex-col gap-2">
       <div>OK</div>
+      <Test></Test>
       <Button buttonText="test"></Button>
       <Button buttonText="test" buttonType="SUCCESS"></Button>
       <Button buttonText="test" buttonType="DANGER"></Button>
