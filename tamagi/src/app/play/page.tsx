@@ -1,9 +1,11 @@
+"use client";
 import Button from "@/components/game/input/button";
 import ButtonRow from "@/components/game/input/buttonRow";
 import Test from "@/components/test";
+import TamagiShell from "@/components/game/display/tamagiShell";
 export default function Page() {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex gap-2 content-center m-[20px]">
       <div>OK</div>
       <Test></Test>
       <Button buttonText="test"></Button>
@@ -12,6 +14,8 @@ export default function Page() {
       <ButtonRow
         buttons={[{ buttonText: "test" }, { buttonText: "test2" }]}
       ></ButtonRow>
+      <TamagiShell tamagiShellColour="RED" />
+      <TamagiShell tamagiShellColour="BLUE" />
     </div>
   );
 }
