@@ -3,7 +3,7 @@ import { produce } from "immer";
 
 export const useTamagi = create<iTamagiStore>()((set, get) => ({
   tamagi: {
-    name: "Jhonny McJohnface",
+    name: "",
     age: 0,
     hunger: 0,
     happiness: 0,
@@ -13,6 +13,13 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
     dead: false,
   },
   //Actions
+  setName: (nameValue: string) => {
+    set(
+      produce<iTamagiStore>((state) =>{
+        state.tamagi.name = nameValue
+      })
+    )
+  },
   setHunger: (hungerValue: number) => {
     set(
       produce<iTamagiStore>((state) => {
@@ -45,6 +52,7 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
 
 interface iTamagiStore {
   tamagi: Tamagi;
+  setName: (n: string) => void;
   setHunger: (n: number) => void;
   increaseHunger: (n: number) => void;
   decreaseHunger: (n: number) => void;

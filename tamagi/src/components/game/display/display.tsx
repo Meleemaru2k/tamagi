@@ -1,11 +1,13 @@
 "use client";
 import cn from "classnames";
+import { useEffect } from "react";
 import Tamagi from "./tamagi";
 import StatRow from "./statRow";
-import { useTamagi } from "@/stores/tamagi";
+import { useDisplay } from "@/stores/display";
 export default function Display(props: DisplayProps) {
-  const displayStatus = props.displayStatus;
-  const tamagi = useTamagi().tamagi;
+  const displayStatus = useDisplay().display.status;
+  const setDisplayStatus = useDisplay().setDisplayStatus;
+
   const changeScreen = () => {
     switch (displayStatus) {
       case "OFF":
@@ -16,7 +18,6 @@ export default function Display(props: DisplayProps) {
         return "bg-gray-500";
     }
   };
-
   return (
     <div
       className={cn(
@@ -32,6 +33,10 @@ export default function Display(props: DisplayProps) {
               { statType: "WARNING" },
               { statType: "WARNING" },
               { statType: "WARNING" },
+              { statType: "WARNING" },
+              { statType: "WARNING" },
+              { statType: "WARNING" },
+              { statType: "STAT_VALUE" },
               { statType: "STAT_VALUE" },
               { statType: "STAT_VALUE" },
               { statType: "STAT_VALUE" },
@@ -43,6 +48,10 @@ export default function Display(props: DisplayProps) {
               { statType: "WARNING" },
               { statType: "WARNING" },
               { statType: "WARNING" },
+              { statType: "WARNING" },
+              { statType: "WARNING" },
+              { statType: "WARNING" },
+              { statType: "STAT_VALUE" },
               { statType: "STAT_VALUE" },
               { statType: "STAT_VALUE" },
               { statType: "STAT_VALUE" },
@@ -56,6 +65,4 @@ export default function Display(props: DisplayProps) {
   );
 }
 
-export type DisplayProps = {
-  displayStatus: "ON" | "OFF" | "STANDBY";
-};
+export type DisplayProps = {};
