@@ -1,5 +1,4 @@
 "use client";
-
 import { Tamagi, useTamagi } from "@/stores/tamagi";
 import {
   cpuEvent,
@@ -11,6 +10,7 @@ import {
   healSick,
 } from "@/utils/types";
 
+//@TODO: Handle time as seconds or something? Or live with not super accurate milliseconds?
 // This would be much better as a class, but for fun and practice it's an object
 const gameloop = {
   lastUpdate: new Date().getTime(),
@@ -78,7 +78,6 @@ const gameloop = {
     updateLastUpdate: (time: number) => void;
   }) {
     const currentTime = new Date().getTime();
-    //const deltaTime = currentTime - data.lastUpdate;
     data.updateLastUpdate(currentTime);
 
     const tamagi = useTamagi.getState();

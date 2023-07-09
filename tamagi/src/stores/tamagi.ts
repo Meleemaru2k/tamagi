@@ -20,13 +20,14 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
    * or when a certain automatic-stat-decrease happened
    */
   lastUpdate: {
-    time: new Date().getTime(),
-    hungerDecrease: new Date().getTime(),
-    happinessDecrease: new Date().getTime(),
-    sicknessTick: new Date().getTime(),
+    time: 0,
+    hungerDecrease: 0,
+    happinessDecrease: 0,
+    sicknessTick: 0,
   },
   eventInProgress: null,
-  //Actions
+  //_______________________ Actions _______________________//
+  //_______________________ Hunger
   setHunger: (hungerValue: number) => {
     set(
       produce<iTamagiStore>((state) => {
@@ -48,6 +49,7 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
     const newHunger = get().tamagi.hunger - hungerValue;
     get().setHunger(newHunger);
   },
+  //_______________________ Happiness
   setHappiness: (happinessValue: number) => {
     set(
       produce<iTamagiStore>((state) => {
@@ -63,11 +65,13 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
   },
   increaseHappiness: (happinessValue: number) => {},
   decreaseHappiness: (happinessValue: number) => {},
+  // _______________________ Sick
   setSick: () => {},
   removeSick: () => {},
+  // _______________________ Poop
   setPoop: () => {},
   removePoop: () => {},
-  // Event Handling
+  //_______________________ Event Handling _______________________//
   addEvent: (event: userEvent | cpuEvent) => {
     set(
       produce<iTamagiStore>((state) => {
@@ -82,10 +86,9 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
       })
     );
   },
-  // Updates
+  //_______________________ Updates _______________________//
   update: (time: number) => {
     const ongoingEvent = get().eventInProgress;
-    if (!ongoingEvent) return;
 
     /**
      * This is going to become much bigger as evolved Tamagis
@@ -94,36 +97,48 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
      * We'll build smaller functions that will take care of this later, for now this will do
      */
     checkEvolution();
-    switch (get().tamagi.type) {
-      default:
-      case TamagiEvos.Baby:
-        if (time - ongoingEvent.timeCreated > ongoingEvent.time) {
-          switch (ongoingEvent.type) {
-            case userEvents.feed:
-              get().increaseHunger(20);
-              break;
-            case userEvents.clean:
-              get().removePoop();
-              break;
-            case userEvents.healSick:
-              get().removeSick();
-              break;
-            case userEvents.play:
-              get().increaseHappiness(20);
-            default:
-              break;
+
+    // Event Handling
+    if (ongoingEvent) {
+      switch (get().tamagi.type) {
+        default:
+        case TamagiEvos.Baby:
+          if (time - ongoingEvent.timeCreated > ongoingEvent.time) {
+            switch (ongoingEvent.type) {
+              case userEvents.feed:
+                get().increaseHunger(20);
+                break;
+              case userEvents.clean:
+                get().removePoop();
+                break;
+              case userEvents.healSick:
+                get().removeSick();
+                break;
+              case userEvents.play:
+                get().increaseHappiness(20);
+              default:
+                break;
+            }
+            get().clearEvent();
           }
-          get().clearEvent();
-        }
-        break;
+          break;
+      }
     }
 
-    // Non Event but hardcoded things
+    // Hardcoded Actions
+    if ((time - get().lastUpdate.hungerDecrease) / 1000 >= 5) {
+      if (get().tamagi.hunger === TamagiMinMax.HungerMin) {
+        get().decreaseHappiness(10);
+      }
+      get().decreaseHunger(2);
+      get().updateLastUpdate({ ...get().lastUpdate, hungerDecrease: time });
+    }
+    get().updateLastUpdate({ ...get().lastUpdate, time: time });
   },
-  updateLastUpdate: (time: number) => {
+  updateLastUpdate: (lastUpdate: TamagiLastUpdate) => {
     set(
       produce<iTamagiStore>((state) => {
-        state.lastUpdate.time = time;
+        state.lastUpdate = lastUpdate;
       })
     );
   },
@@ -143,12 +158,7 @@ enum TamagiEvos {
 interface iTamagiStore {
   tamagi: Tamagi;
   eventInProgress: userEvent | cpuEvent | null;
-  lastUpdate: {
-    time: number;
-    hungerDecrease: number;
-    happinessDecrease: number;
-    sicknessTick: number;
-  };
+  lastUpdate: TamagiLastUpdate;
   setHunger: (n: number) => void;
   increaseHunger: (n: number) => void;
   decreaseHunger: (n: number) => void;
@@ -162,6 +172,14 @@ interface iTamagiStore {
   update: (time: number) => void;
   addEvent: (event: userEvent | cpuEvent) => void;
   clearEvent: () => void;
+  updateLastUpdate: (lastUpdate: TamagiLastUpdate) => void;
+}
+
+interface TamagiLastUpdate {
+  time: number;
+  hungerDecrease: number;
+  happinessDecrease: number;
+  sicknessTick: number;
 }
 
 export enum TamagiMinMax {
