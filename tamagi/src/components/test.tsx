@@ -40,7 +40,11 @@ export default function Test() {
             : "none"}
         </div>
         <div>Is Sick:</div>
-        <div>{tamagi.tamagi.sick ? "true" : "false"}</div>
+        <div>
+          {tamagi.tamagi.sick?.timeHealed === null
+            ? tamagi.tamagi.sick.type.name
+            : "false"}
+        </div>
       </div>
     </div>
   );
