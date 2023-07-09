@@ -91,7 +91,7 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
     set(
       produce<iTamagiStore>((state) => {
         state.tamagi.sick = {
-          type: Sicknesses.find((s) => s.id === type) ?? Sicknesses[0],
+          type: Sicknesses.get(type) as Sickness, // If a sickness is missing this is obv. going to break
           timeCreated: time ?? new Date().getTime(),
           timeHealed: null,
         };
