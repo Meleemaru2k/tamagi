@@ -23,7 +23,7 @@ export default function Page() {
           { buttonType: "RIGHT" },
         ]}
       ></ButtonRow>
-      <TamagiShell tamagiShellColour="RED" />
+      <TamagiShell />
     </div>
   );
 }

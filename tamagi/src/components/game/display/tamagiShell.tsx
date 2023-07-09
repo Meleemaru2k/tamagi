@@ -1,5 +1,4 @@
 "use client";
-import cn from "classnames";
 import Display from "./display";
 import ButtonRow from "../input/buttonRow";
 import { useTamagi } from "@/stores/tamagi";
@@ -24,6 +23,4 @@ export default function TamagiShell(props: TamagiShellProps) {
     </div>
   );
 }
-export type TamagiShellProps = {
-  tamagiShellColour: "RED" | "BLUE";
-};
+export type TamagiShellProps = {};

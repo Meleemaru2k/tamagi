@@ -4,7 +4,7 @@ import { produce } from "immer";
 export const useDisplay = create<iDisplayStore>()((set, get) => ({
   display: {
     status: "OFF",
-    iconIndex: 1,
+    pageIndex: 1,
   },
   //Actions
   setDisplayStatus: (statusValue: string) => {
@@ -14,43 +14,43 @@ export const useDisplay = create<iDisplayStore>()((set, get) => ({
       })
     );
   },
-  setIconIndex: (iconIndexValue: number) => {
+  setPageIndex: (pageIndexValue: number) => {
     set(
       produce<iDisplayStore>((state) => {
-        if (iconIndexValue < DisplayMinMax.iconIndexMin) {
-          state.display.iconIndex = DisplayMinMax.iconIndexMax;
-        } else if (iconIndexValue > DisplayMinMax.iconIndexMax) {
-          state.display.iconIndex = DisplayMinMax.iconIndexMin;
+        if (pageIndexValue < DisplayMinMax.pageIndexMin) {
+          state.display.pageIndex = DisplayMinMax.pageIndexMin;
+        } else if (pageIndexValue > DisplayMinMax.pageIndexMax) {
+          state.display.pageIndex = DisplayMinMax.pageIndexMax;
         } else {
-          state.display.iconIndex = iconIndexValue;
+          state.display.pageIndex = pageIndexValue;
         }
       })
     );
   },
-  increaseIconIndex: (iconIndexValue: number) => {
-    const newIconIndex = get().display.iconIndex - iconIndexValue;
-    get().setIconIndex(newIconIndex);
+  increasePageIndex: (pageIndexValue: number) => {
+    const newPageIndex = get().display.pageIndex - pageIndexValue;
+    get().setPageIndex(newPageIndex);
   },
-  decreaseIconIndex: (iconIndexValue: number) => {
-    const newIconIndex = get().display.iconIndex + iconIndexValue;
-    get().setIconIndex(newIconIndex);
+  decreasePageIndex: (pageIndexValue: number) => {
+    const newPageIndex = get().display.pageIndex + pageIndexValue;
+    get().setPageIndex(newPageIndex);
   },
 }));
 
 interface iDisplayStore {
   display: Display;
   setDisplayStatus: (n: string) => void;
-  setIconIndex: (n: number) => void;
-  increaseIconIndex: (n: number) => void;
-  decreaseIconIndex: (n: number) => void;
+  setPageIndex: (n: number) => void;
+  increasePageIndex: (n: number) => void;
+  decreasePageIndex: (n: number) => void;
 }
 
 export enum DisplayMinMax {
-  iconIndexMax = 20,
-  iconIndexMin = 1,
+  pageIndexMax = 3,
+  pageIndexMin = 1,
 }
 
 type Display = {
   status: string;
-  iconIndex: number;
+  pageIndex: number;
 };
