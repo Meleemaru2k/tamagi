@@ -16,7 +16,7 @@ export default function Test() {
   const setHunger = useTamagi((state) => state.setHunger);
   const increaseHunger = useTamagi((state) => state.increaseHunger);
   const decreaseHunger = useTamagi((state) => state.decreaseHunger);
-  const iconIndex = useDisplay((state) => state.display.iconIndex);
+  const iconIndex = useDisplay((state) => state.display.pageIndex);
 
   let tamagiName = "";
 
@@ -49,7 +49,7 @@ export default function Test() {
         Set Shell Colour To Green
       </div>
       <div className="border-[1px]" onClick={() => tamagiShellColour("teal")}>
-        Set Shell Colour To Purple
+        Set Shell Colour To Teal
       </div>
       <div onClick={() => setHunger(50)}>Hunger to 50</div>
       <div onClick={() => increaseHunger(2)}>Hunger Increase 2</div>

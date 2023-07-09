@@ -6,9 +6,9 @@ import { useDisplay } from "@/stores/display";
 
 export default function Button(props: ButtonProps) {
   const setDisplayStatus = useDisplay().setDisplayStatus;
-  const increaseIconIndex = useDisplay().increaseIconIndex;
-  const decreaseIconIndex = useDisplay().decreaseIconIndex;
-  const iconIndex = useDisplay().display.iconIndex;
+  const increasePageIndex = useDisplay().increasePageIndex;
+  const decreasePageIndex = useDisplay().decreasePageIndex;
+  const pageIndex = useDisplay().display.pageIndex;
   const display = useDisplay().display.status;
   const buttonType = props.buttonType;
   const [isButtonPressed, setIsButtonPressed] = useState(false);
@@ -37,16 +37,16 @@ export default function Button(props: ButtonProps) {
           pressedText: "<<",
           notPressedText: "<",
           onClick: () => {
-            increaseIconIndex(1);
-            console.log(iconIndex);
+            increasePageIndex(1);
+            console.log(pageIndex);
           },
         };
       case "RIGHT":
         return {
           bg: "bg-red-500 text-white",
           onClick: () => {
-            decreaseIconIndex(1);
-            console.log(iconIndex);
+            decreasePageIndex(1);
+            console.log(pageIndex);
           },
           pressedText: ">>",
           notPressedText: ">",
