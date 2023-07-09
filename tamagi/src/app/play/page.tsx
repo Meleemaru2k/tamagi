@@ -8,14 +8,21 @@ export default function Page() {
     <div className="flex gap-2 content-center m-[20px]">
       <div>OK</div>
       <Test></Test>
-      <Button buttonText="test"></Button>
-      <Button buttonText="test" buttonType="SUCCESS"></Button>
-      <Button buttonText="test" buttonType="DANGER"></Button>
+      <div className="flex">
+        <Button buttonType="POWER"></Button>
+        <Button buttonType="ENTER"></Button>
+        <Button buttonType="LEFT"></Button>
+        <Button buttonType="RIGHT"></Button>
+      </div>
       <ButtonRow
-        buttons={[{ buttonText: "test" }, { buttonText: "test2" }]}
+        buttons={[
+          { buttonType: "POWER" },
+          { buttonType: "ENTER" },
+          { buttonType: "LEFT" },
+          { buttonType: "RIGHT" },
+        ]}
       ></ButtonRow>
       <TamagiShell tamagiShellColour="RED" />
-      <TamagiShell tamagiShellColour="BLUE" />
     </div>
   );
 }
