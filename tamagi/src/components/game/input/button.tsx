@@ -1,35 +1,62 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import cn from "classnames";
+import { useDisplay } from "@/stores/display";
 
 export default function Button(props: ButtonProps) {
-  const buttonText = props.buttonText;
+  const setDisplayStatus = useDisplay().setDisplayStatus;
+  const increasePageIndex = useDisplay().increasePageIndex;
+  const decreasePageIndex = useDisplay().decreasePageIndex;
+  const pageIndex = useDisplay().display.pageIndex;
+  const display = useDisplay().display.status;
   const buttonType = props.buttonType;
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    if (isLoading) {
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 1000);
-    }
-  });
+  const [isButtonPressed, setIsButtonPressed] = useState(false);
 
   const buttonStyle = () => {
     switch (buttonType) {
-      case "PRIMARY":
-        return "bg-blue-500 text-white";
-      case "SECONDARY":
-        return "bg-teal-500 text-white";
-      case "WARNING":
-        return "bg-yellow-500 text-black";
-      case "DANGER":
-        return "bg-red-500 text-white";
-      case "SUCCESS":
-        return "bg-green-500 text-white";
+      case "POWER":
+        return {
+          bg: "bg-blue-500 text-white",
+          pressedText: "O",
+          notPressedText: "X",
+          onClick: () => {
+            setIsButtonPressed(!isButtonPressed);
+            display !== "ON" ? setDisplayStatus("ON") : setDisplayStatus("OFF");
+          },
+        };
+      case "ENTER":
+        return {
+          bg: "bg-teal-500 text-white",
+          pressedText: "+",
+          notPressedText: "-",
+        };
+      case "LEFT":
+        return {
+          bg: "bg-yellow-500 text-black",
+          pressedText: "<<",
+          notPressedText: "<",
+          onClick: () => {
+            increasePageIndex(1);
+            console.log(pageIndex);
+          },
+        };
+      case "RIGHT":
+        return {
+          bg: "bg-red-500 text-white",
+          onClick: () => {
+            decreasePageIndex(1);
+            console.log(pageIndex);
+          },
+          pressedText: ">>",
+          notPressedText: ">",
+        };
       default:
-        return "bg-blue-500 text-white";
+        return {
+          bg: "bg-blue-500 text-white",
+          text: "",
+          onClick: () => {},
+        };
     }
   };
 
@@ -38,18 +65,18 @@ export default function Button(props: ButtonProps) {
       <button
         className={cn(
           buttonStyle(),
-          "px-2 py-1 rounded-sm border-[1px] border-teal-700 transition-all"
+          "px-2 py-1 rounded-sm border-[1px] border-teal-700 transition-all h-[50px]"
         )}
-        onClick={() => setIsLoading(true)}
+        onClick={buttonStyle().onClick}
       >
-        {buttonText}
-        {isLoading ? " - now loading" : ""}
+        {isButtonPressed
+          ? buttonStyle().pressedText
+          : buttonStyle().notPressedText}
       </button>
     </div>
   );
 }
 
 export type ButtonProps = {
-  buttonText: string;
-  buttonType?: "PRIMARY" | "SECONDARY" | "WARNING" | "DANGER" | "SUCCESS";
+  buttonType?: "POWER" | "ENTER" | "LEFT" | "RIGHT";
 };

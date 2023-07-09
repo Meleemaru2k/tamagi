@@ -8,7 +8,7 @@ import { SicknessTypes } from "@/utils/sickness";
 export const useTamagi = create<iTamagiStore>()((set, get) => ({
   tamagi: {
     type: 0,
-    name: "Jhonny McJohnface",
+    name: "",
     age: 0,
     hunger: 50,
     happiness: 50,
@@ -34,6 +34,13 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
   },
   eventInProgress: null,
   //_______________________ Actions _______________________//
+  setName: (nameValue: string) => {
+    set(
+      produce<iTamagiStore>((state) => {
+        state.tamagi.name = nameValue;
+      })
+    );
+  },
   //_______________________ Hunger
   setHunger: (hungerValue: number) => {
     set(
@@ -220,6 +227,7 @@ interface iTamagiStore {
   tamagi: Tamagi;
   eventInProgress: userEvent | cpuEvent | null;
   lastUpdate: TamagiLastUpdate;
+  setName: (n: string) => void;
   setHunger: (value: number) => void;
   increaseHunger: (value: number) => void;
   decreaseHunger: (value: number) => void;
