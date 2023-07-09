@@ -13,7 +13,7 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
     hunger: 50,
     happiness: 50,
     sick: {
-      type: Sicknesses[0],
+      type: Sicknesses.get(SicknessTypes.Healthy) as Sickness,
       timeCreated: 0,
       timeHealed: 0,
     },
@@ -215,6 +215,8 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
 function checkEvolution() {
   return;
 }
+
+//_______________________ Types _______________________//
 
 enum TamagiEvos {
   Baby,

@@ -4,6 +4,19 @@ export enum SicknessTypes {
   Healthy,
   Cold,
 }
+
+/**
+ * @tickEffect.time
+ * Time in ms between ticks
+ * @tickEffect.hunger
+ * Amount of hunger to modify (-/+) per tick
+ * @tickEffect.happiness
+ * Amount of happiness to modify (-/+) per tick
+ * @tickEffect.poopchance
+ * Additional or decreased chance to poop per tick
+ * @tickEffect.diesIf
+ * Special death conditions that can trigger when sick
+ */
 export type Sickness = {
   id: SicknessTypes;
   name: string;
