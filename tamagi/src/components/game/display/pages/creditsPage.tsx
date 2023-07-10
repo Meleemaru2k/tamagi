@@ -1,7 +1,7 @@
 "use client";
 import cn from "classnames";
 import { useDisplay } from "@/stores/display";
-export default function Page3(props: Page3Props) {
+export default function CreditsPage(props: CreditsProps) {
   const displayStatus = useDisplay().display.status;
 
   const changeScreen = () => {
@@ -32,4 +32,4 @@ export default function Page3(props: Page3Props) {
   );
 }
 
-export type Page3Props = {};
+export type CreditsProps = {};

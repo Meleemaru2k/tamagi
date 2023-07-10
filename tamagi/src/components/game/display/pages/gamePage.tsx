@@ -4,8 +4,7 @@ import Tamagi from "../tamagi";
 import StatRow from "../statRow";
 import { useDisplay } from "@/stores/display";
 import { useTamagi } from "@/stores/tamagi";
-import { useEffect } from "react";
-export default function Page1(props: Page1Props) {
+export default function GamePage(props: GamePageProps) {
   const displayStatus = useDisplay().display.status;
   const fullUpedness = useTamagi().tamagi.hunger;
   const tamagi = useTamagi();
@@ -49,7 +48,7 @@ export default function Page1(props: Page1Props) {
     if (fullUpedness > 0) {
       return "w-[10px] bg-red-500";
     } else {
-      return "w-[100px] bg-black";
+      return "w-[100px] bg-black text-white";
     }
   };
 
@@ -59,9 +58,9 @@ export default function Page1(props: Page1Props) {
         <div className="flex flex-col items-center place-content-evenly w-[100%] h-[100%] bg-gray-200">
           <div>
             <div
-              className={cn(changeHealthBar(fullUpedness), "h-[10px] bg-black")}
+              className={cn(changeHealthBar(fullUpedness), "h-[20px] bg-black")}
             >
-              HealthBar
+              Healthbar
             </div>
             <div>
               {tamagi.tamagi.sick?.timeHealed === null ? (
@@ -97,4 +96,4 @@ export default function Page1(props: Page1Props) {
   );
 }
 
-export type Page1Props = {};
+export type GamePageProps = {};

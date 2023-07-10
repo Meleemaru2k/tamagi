@@ -36,7 +36,7 @@ export default function Page2(props: Page2Props) {
         <>
           <h1>Settings Page</h1>
           <div className="border-[1px]">
-            <h1> ICON INDEX: {pageIndex}</h1>
+            name:
             <input
               className="border-[1px]"
               onChange={(e) => {
@@ -45,25 +45,25 @@ export default function Page2(props: Page2Props) {
             ></input>
           </div>
           <div
-            className="border-[1px]"
+            className="border-[1px] bg-red-500"
             onClick={() => tamagiShellColour("red")}
           >
             Set Shell Colour To Red
           </div>
           <div
-            className="border-[1px]"
+            className="border-[1px] bg-blue-500"
             onClick={() => tamagiShellColour("blue")}
           >
             Set Shell Colour To Blue
           </div>
           <div
-            className="border-[1px] "
+            className="border-[1px] bg-green-500 "
             onClick={() => tamagiShellColour("green")}
           >
             Set Shell Colour To Green
           </div>
           <div
-            className="border-[1px]"
+            className="border-[1px] bg-teal-500"
             onClick={() => tamagiShellColour("teal")}
           >
             Set Shell Colour To Teal

@@ -1,6 +1,9 @@
 "use client";
 import cn from "classnames";
 import { useDisplay } from "@/stores/display";
+import Page1 from "./gamePage";
+import Page2 from "./settingsPage";
+import Page3 from "./creditsPage";
 export default function Page0(props: Page0Props) {
   const displayStatus = useDisplay().display.status;
   const setPageIndex = useDisplay().setPageIndex;
@@ -15,7 +18,7 @@ export default function Page0(props: Page0Props) {
         return "bg-gray-500";
     }
   };
-  const buttons = ["Start", "Settings", "Credits"];
+  const pages = ["Start", "Settings", "Credits"];
   return (
     <div
       className={cn(
@@ -26,10 +29,10 @@ export default function Page0(props: Page0Props) {
       {displayStatus === "ON" ? (
         <>
           <h1>MAIN MENU</h1>
-          {buttons.map((button, i) => {
+          {pages.map((page, i) => {
             return (
               <button key={i} onClick={() => setPageIndex(i + 1)}>
-                {button}
+                {page}
               </button>
             );
           })}
