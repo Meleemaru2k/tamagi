@@ -4,10 +4,17 @@ import Button from "@/components/game/input/button";
 import ButtonRow from "@/components/game/input/buttonRow";
 import Test from "@/components/test";
 import TamagiShell from "@/components/game/display/tamagiShell";
+import gameloop from "@/utils/gameloop";
+
 export default function Page() {
+  if (!gameloop.isRunning()) {
+    gameloop.start();
+    console.log("gameloop started");
+  }
+
   return (
     <div className="flex gap-2 content-center m-[20px]">
-      <div>OK</div>
+      <div onClick={() => gameloop.stop()}>OK</div>
       <Test></Test>
       <div className="flex">
         <Button buttonType="POWER"></Button>
