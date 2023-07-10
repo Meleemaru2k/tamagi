@@ -2,10 +2,12 @@
 
 import { useEffect, useState } from "react";
 import cn from "classnames";
+import { useTamagi } from "@/stores/tamagi";
 
 export default function Stat(props: StatProps) {
   const statType = props.statType;
   const [isPopUpVisible, setIsPopUpVisible] = useState(false);
+  const fullUpedness = useTamagi().tamagi.hunger;
 
   useEffect(() => {
     if (isPopUpVisible) {
@@ -18,32 +20,39 @@ export default function Stat(props: StatProps) {
   const statStyle = () => {
     switch (statType) {
       case "WARNING":
-        return "rounded w-[20px] h-[20px] bg-teal-500 ";
+        return "bg-teal-500 ";
       case "STAT_VALUE":
-        return "w-[20px] h-[10px] bg-gray-500";
+        return "bg-gray-500";
+      case "FULLUPEDNESS":
+        if (fullUpedness > 70) {
+          return `bg-green-500`;
+        } else if (fullUpedness > 50) {
+          return "bg-orange-500 ";
+        } else {
+          return " bg-red-500 ";
+        }
     }
   };
 
   return (
-    <div className="flex">
+    <div className="flex h-[25px]">
       {isPopUpVisible ? (
         <div
-          className="h-[75px] w-[300px] absolute bg-blue-500 z-index-[1]"
+          className="h-[75px] w-[300px] bg-blue-500 z-index-[1]"
           onClick={() => setIsPopUpVisible(!isPopUpVisible)}
         ></div>
       ) : (
-        <button
-          className={cn(
-            statStyle(),
-            "px-2 py-1 rounded-sm border-[1px] border-teal-700 transition-all"
-          )}
+        <div
+          className={cn(statStyle(), "rounded w-[25px] h-[25px]")}
           onClick={() => setIsPopUpVisible(!isPopUpVisible)}
-        ></button>
+        >
+          H
+        </div>
       )}
     </div>
   );
 }
 
 export type StatProps = {
-  statType?: "WARNING" | "STAT_VALUE";
+  statType?: "WARNING" | "STAT_VALUE" | "FULLUPEDNESS";
 };

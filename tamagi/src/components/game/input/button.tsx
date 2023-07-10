@@ -8,6 +8,7 @@ export default function Button(props: ButtonProps) {
   const setDisplayStatus = useDisplay().setDisplayStatus;
   const increasePageIndex = useDisplay().increasePageIndex;
   const decreasePageIndex = useDisplay().decreasePageIndex;
+  const setPageIndex = useDisplay().setPageIndex;
   const pageIndex = useDisplay().display.pageIndex;
   const display = useDisplay().display.status;
   const buttonType = props.buttonType;
@@ -23,6 +24,9 @@ export default function Button(props: ButtonProps) {
           onClick: () => {
             setIsButtonPressed(!isButtonPressed);
             display !== "ON" ? setDisplayStatus("ON") : setDisplayStatus("OFF");
+            {
+              isButtonPressed ? setPageIndex(0) : "";
+            }
           },
         };
       case "ENTER":

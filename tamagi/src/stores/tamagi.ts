@@ -8,7 +8,7 @@ import { SicknessTypes } from "@/utils/sickness";
 export const useTamagi = create<iTamagiStore>()((set, get) => ({
   tamagi: {
     type: 0,
-    name: "",
+    name: "John",
     age: 0,
     hunger: 50,
     happiness: 50,
