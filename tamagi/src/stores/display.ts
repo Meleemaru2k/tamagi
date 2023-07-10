@@ -17,12 +17,16 @@ export const useDisplay = create<iDisplayStore>()((set, get) => ({
   setPageIndex: (pageIndexValue: number) => {
     set(
       produce<iDisplayStore>((state) => {
-        if (pageIndexValue < DisplayMinMax.pageIndexMin) {
-          state.display.pageIndex = DisplayMinMax.pageIndexMin;
-        } else if (pageIndexValue > DisplayMinMax.pageIndexMax) {
-          state.display.pageIndex = DisplayMinMax.pageIndexMax;
-        } else {
-          state.display.pageIndex = pageIndexValue;
+        if (state.display.status === "ON") {
+          if (pageIndexValue < DisplayMinMax.pageIndexMin) {
+            state.display.pageIndex = DisplayMinMax.pageIndexMin;
+          } else if (pageIndexValue > DisplayMinMax.pageIndexMax) {
+            state.display.pageIndex = DisplayMinMax.pageIndexMax;
+          } else {
+            state.display.pageIndex = pageIndexValue;
+          }
+        } else if (state.display.status === "OFF") {
+          state.display.pageIndex = 1;
         }
       })
     );
