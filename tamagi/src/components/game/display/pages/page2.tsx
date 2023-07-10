@@ -3,18 +3,16 @@ import cn from "classnames";
 import { useDisplay } from "@/stores/display";
 import { useTamagi } from "@/stores/tamagi";
 import { useTamagiShell } from "@/stores/tamagiShell";
-import { displayPartsToString } from "typescript";
 export default function Page2(props: Page2Props) {
   const displayStatus = useDisplay().display.status;
   //Tamagi Shell
   const tamagiShellColour = useTamagiShell(
     (state) => state.setTamagiShellColour
   );
-  const iconIndex = useDisplay((state) => state.display.pageIndex);
-  let tamagiName = "";
+  const pageIndex = useDisplay((state) => state.display.pageIndex);
 
   //Tamagi
-  const setTamagiName = useTamagi((state) => state.setName);
+  const setTamagiName = useTamagi().setName;
 
   const changeScreen = () => {
     switch (displayStatus) {
@@ -27,30 +25,24 @@ export default function Page2(props: Page2Props) {
     }
   };
 
-  const handleSubmit = () => {
-    setTamagiName(tamagiName);
-  };
   return (
     <div
       className={cn(
         changeScreen(),
-        "h-[300px] w-[300px] flex flex-col items-center justify-between"
+        "h-[100%] w-[100%] flex flex-col items-center justify-between"
       )}
     >
       {displayStatus === "ON" ? (
         <>
           <h1>Settings Page</h1>
           <div className="border-[1px]">
-            <h1> ICON INDEX: {iconIndex}</h1>
+            <h1> ICON INDEX: {pageIndex}</h1>
             <input
-              id="nameInput"
               className="border-[1px]"
-              onChange={(e) => (tamagiName = e.target.value)}
+              onChange={(e) => {
+                setTamagiName(e.target.value);
+              }}
             ></input>
-            {/* to do: should clear on submit */}
-            <button type="submit" onClick={() => handleSubmit()}>
-              Set name
-            </button>
           </div>
           <div
             className="border-[1px]"

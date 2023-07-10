@@ -13,32 +13,12 @@ export default function Test() {
   );
 
   //Tamagi
-  const setTamagiName = useTamagi((state) => state.setName);
   const tamagi = useTamagi();
   tamagi.eventInProgress;
 
-  const iconIndex = useDisplay((state) => state.display.pageIndex);
-  let tamagiName = "";
-
-  const handleSubmit = () => {
-    setTamagiName(tamagiName);
-    console.log(document.getElementById("nameInput"));
-  };
-
   return (
     <div>
-      <div className="border-[1px]">
-        <h1> ICON INDEX: {iconIndex}</h1>
-        <input
-          id="nameInput"
-          className="border-[1px]"
-          onChange={(e) => (tamagiName = e.target.value)}
-        ></input>
-        {/* to do: should clear on submit */}
-        <button type="submit" onClick={() => handleSubmit()}>
-          Set name
-        </button>
-      </div>
+      {tamagi.tamagi.name}
       <div className="border-[1px]" onClick={() => tamagiShellColour("red")}>
         Set Shell Colour To Red
       </div>

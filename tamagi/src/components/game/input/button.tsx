@@ -25,7 +25,7 @@ export default function Button(props: ButtonProps) {
             setIsButtonPressed(!isButtonPressed);
             display !== "ON" ? setDisplayStatus("ON") : setDisplayStatus("OFF");
             {
-              isButtonPressed ? setPageIndex(1) : "";
+              isButtonPressed ? setPageIndex(0) : "";
             }
           },
         };

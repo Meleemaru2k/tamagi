@@ -4,7 +4,7 @@ import { produce } from "immer";
 export const useDisplay = create<iDisplayStore>()((set, get) => ({
   display: {
     status: "OFF",
-    pageIndex: 1,
+    pageIndex: 0,
   },
   //Actions
   setDisplayStatus: (statusValue: string) => {
@@ -26,7 +26,7 @@ export const useDisplay = create<iDisplayStore>()((set, get) => ({
             state.display.pageIndex = pageIndexValue;
           }
         } else if (state.display.status === "OFF") {
-          state.display.pageIndex = 1;
+          state.display.pageIndex = 0;
         }
       })
     );
@@ -51,7 +51,7 @@ interface iDisplayStore {
 
 export enum DisplayMinMax {
   pageIndexMax = 3,
-  pageIndexMin = 1,
+  pageIndexMin = 0,
 }
 
 type Display = {

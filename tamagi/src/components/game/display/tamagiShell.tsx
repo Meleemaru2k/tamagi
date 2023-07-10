@@ -8,7 +8,7 @@ export default function TamagiShell(props: TamagiShellProps) {
   const tamagiShell = useTamagiShell().tamagiShell;
   return (
     <div
-      className={`bg-${tamagiShell.colour}-500 h-[500px] w-[500px] flex flex-col items-center place-content-evenly`}
+      className={`bg-${tamagiShell.colour}-500 h-[800px] w-[800px] flex flex-col items-center place-content-evenly`}
     >
       <h1>{tamagi.name}</h1>
       <Display />

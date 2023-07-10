@@ -1,8 +1,9 @@
 "use client";
 import cn from "classnames";
 import { useDisplay } from "@/stores/display";
-export default function Page3(props: Page3Props) {
+export default function Page0(props: Page0Props) {
   const displayStatus = useDisplay().display.status;
+  const setPageIndex = useDisplay().setPageIndex;
 
   const changeScreen = () => {
     switch (displayStatus) {
@@ -14,6 +15,7 @@ export default function Page3(props: Page3Props) {
         return "bg-gray-500";
     }
   };
+  const buttons = ["Start", "Settings", "Credits"];
   return (
     <div
       className={cn(
@@ -23,7 +25,14 @@ export default function Page3(props: Page3Props) {
     >
       {displayStatus === "ON" ? (
         <>
-          <h1>Credits Page</h1>
+          <h1>MAIN MENU</h1>
+          {buttons.map((button, i) => {
+            return (
+              <button key={i} onClick={() => setPageIndex(i + 1)}>
+                {button}
+              </button>
+            );
+          })}
         </>
       ) : (
         ""
@@ -32,4 +41,4 @@ export default function Page3(props: Page3Props) {
   );
 }
 
-export type Page3Props = {};
+export type Page0Props = {};
