@@ -54,10 +54,14 @@ const tamagiTypes = new Map<TamagiEvos, TamagiType>([
         },
       },
       sprite: {
-        position: { x: 0, y: 0 },
+        position: getSpritePos(0, 8),
       },
     },
   ],
 ]);
 
 export default tamagiTypes;
+
+function getSpritePos(x: number, y: number) {
+  return { x: -x * 16, y: -y * 16 };
+}
