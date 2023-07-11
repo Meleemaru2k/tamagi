@@ -1,10 +1,48 @@
 import { Ran } from "./utlis";
 
 export enum TamagiEvos {
-  Baby,
+  Baby, //Green Slime
+  Baby_Rabbit,
+  Baby_Rat,
+  Baby_Bat,
+  Baby_BrownSlime, //If youre really bad lol
   Child__Goblin,
   Child__Ghost,
-  Child__Beetle,
+  Child__BlueBeetle,
+  Child__TurquoiseBeetle,
+  Child_Bat,
+  Child_Snake,
+  Child_Boar,
+  Child_Rat,
+  Child_Dog,
+  Child_Skeleton,
+  Adult_GoblinWarrior,
+  Adult_GoblinRogue,
+  Adult_MudGoblin,
+  Adult_VampireBat,
+  Adult_Spider,
+  Adult_VenomSpider,
+  Adult_Dog,
+  Adult_Wolf,
+  Adult_Ghost,
+  Adult_BlueBeetle,
+  Adult_TurquoiseBeetle,
+  Adult_RedBeetle,
+  Adult_GreenSnake,
+  Adult_PurpleSnake,
+  Adult_SkeletonWarrior,
+  Adult_SkeletonSpearman,
+  Adult_SkeletonMage,
+  Adult_Scorpion,
+  Adult_Goblin,
+  Adult_Crab,
+  Mystic_ShamanHumanDudeGuyTopRight,
+  Mystic_Reaper,
+  Mystic_GhostPhantom,
+  Mystic_FireBeetle,
+  Mystic_ThunderWyrm,
+  Mystic_ArcticWyrm,
+  Mystic_PurpleSlime, // The rarest one!
 }
 
 /**
@@ -14,6 +52,7 @@ export enum TamagiEvos {
 export interface TamagiType {
   id: TamagiEvos;
   name: string;
+  idleAnimation: string;
   tickEffect: {
     hunger: {
       time: number;
@@ -39,6 +78,7 @@ const tamagiTypes = new Map<TamagiEvos, TamagiType>([
     {
       id: TamagiEvos.Baby,
       name: "Baby",
+      idleAnimation: "breathing",
       tickEffect: {
         hunger: {
           time: 5000,
