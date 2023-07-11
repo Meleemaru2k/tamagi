@@ -110,7 +110,7 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
   addEvent: (event: userEvent | cpuEvent) => {
     set(
       produce<iTamagiStore>((state) => {
-        //@TODO: Make a function that handles this
+        //@TODO: Make a function that handles this  (setAnimationByEvent())
         if (event.type === userEvents.feed) {
           state.animation.type = "eating";
         }
@@ -121,14 +121,8 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
   clearEvent: () => {
     set(
       produce<iTamagiStore>((state) => {
-        //@TODO: Make a function that handles this
-        if (state.eventInProgress?.type === userEvents.feed) {
-          if (state.tamagi.hunger > 20 && state.tamagi.happiness > 20) {
-            state.animation.type = "breathing";
-          } else {
-            state.animation.type = "slowbreathing";
-          }
-        }
+        //@TODO: Make a function that handles this (setAnimationByEvent())
+        state.animation.type = "breathing";
         state.eventInProgress = null;
       })
     );
@@ -173,6 +167,9 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
     }
 
     // Hardcoded Actions
+
+    // @TODO: handle animations
+    // ...no implemented yet
 
     //handle sickness
     if (
