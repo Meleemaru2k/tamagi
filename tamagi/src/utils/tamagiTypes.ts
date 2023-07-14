@@ -102,6 +102,6 @@ const tamagiTypes = new Map<TamagiEvos, TamagiType>([
 
 export default tamagiTypes;
 
-function getSpritePos(x: number, y: number) {
-  return { x: -x * 16, y: -y * 16 };
+function getSpritePos(row: number, col: number) {
+  return { x: -row * 16, y: -col * 16 };
 }
