@@ -4,7 +4,10 @@ import { userEvent, cpuEvent, userEvents } from "@/utils/events";
 import Tamagi from "@/components/game/display/tamagi";
 import { Sickness, Sicknesses } from "@/utils/sickness";
 import { SicknessTypes } from "@/utils/sickness";
-import TamagiTypes, { TamagiEvos, TamagiType } from "@/utils/tamagiTypes";
+import TamagiTypes, {
+  TamagiEvos,
+  TamagiType,
+} from "@/utils/tamagi/tamagiTypes";
 
 export const useTamagi = create<iTamagiStore>()((set, get) => ({
   tamagi: {

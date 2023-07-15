@@ -1,6 +1,5 @@
-import { statSync } from "fs";
-import { Ran } from "./utlis";
-import { convertTime as ct } from "./utlis";
+import { Ran } from "@/utils/utils";
+import { convertTime as ct } from "@/utils/utils";
 import events, { cpuEvents, userEvents } from "@/utils/events";
 
 export enum TamagiEvos {
