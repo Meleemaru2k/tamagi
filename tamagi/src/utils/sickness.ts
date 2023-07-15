@@ -20,7 +20,7 @@ export enum SicknessTypes {
 export type Sickness = {
   id: SicknessTypes;
   name: string;
-  tickEffect: {
+  tickEffects: {
     time: number;
     hunger: number;
     happiness: number;
@@ -35,7 +35,7 @@ export const Sicknesses = new Map<SicknessTypes, Sickness>([
     {
       id: SicknessTypes.Healthy,
       name: "Healthy",
-      tickEffect: {
+      tickEffects: {
         time: 0,
         hunger: 0,
         happiness: 0,
@@ -49,7 +49,7 @@ export const Sicknesses = new Map<SicknessTypes, Sickness>([
     {
       id: SicknessTypes.Cold,
       name: "Cold",
-      tickEffect: {
+      tickEffects: {
         time: 10000,
         hunger: 10,
         happiness: 10,

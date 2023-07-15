@@ -184,7 +184,7 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
     // Automatic Stat Decrease
     if (
       time - get().lastUpdate.hungerDecrease >=
-      get().tamagi.type.tickEffect.hunger.time
+      get().tamagi.type.tickEffects.hunger.time
     ) {
       if (get().tamagi.hunger === TamagiMinMax.HungerMin) {
         get().increaseHappiness(-10);

@@ -1,7 +1,7 @@
 import { statSync } from "fs";
 import { Ran } from "./utlis";
 import { convertTime as ct } from "./utlis";
-import { ScriptKind } from "typescript";
+import events, { cpuEvents, userEvents } from "@/utils/events";
 
 export enum TamagiEvos {
   Baby, //Green Slime
@@ -61,7 +61,7 @@ export interface TamagiType {
     happiness: [number, number];
     maxAge: number;
   };
-  tickEffect: {
+  tickEffects: {
     hunger: {
       time: number;
       value: number;
@@ -74,8 +74,9 @@ export interface TamagiType {
       time: number;
       value: Ran<101>;
     };
+    nextSicknessDelay: number;
   };
-  eventHandlers: any;
+  eventHandlers: Partial<Record<userEvents, () => void>>;
   evolution: (stats: TamagiStats) => TamagiEvos | null;
   sprite: {
     position: { x: number; y: number };
@@ -94,7 +95,7 @@ const tamagiTypes = new Map<TamagiEvos, TamagiType>([
         happiness: [0, 100],
         maxAge: 3,
       },
-      tickEffect: {
+      tickEffects: {
         hunger: {
           time: ct(15, "s", "ms"),
           value: -2,
@@ -107,8 +108,12 @@ const tamagiTypes = new Map<TamagiEvos, TamagiType>([
           time: ct(10, "m", "ms"),
           value: 100,
         },
+        nextSicknessDelay: ct(15, "m", "ms"),
       },
-      eventHandlers: {},
+      eventHandlers: {
+        [userEvents.feed]: () => {},
+        [userEvents.clean]: () => {},
+      },
       evolution: (stats: TamagiStats) => {
         if (stats.age < ct(1, "h", "ms")) return null;
         switch (true) {
