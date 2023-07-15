@@ -8,7 +8,7 @@ import {
   feed,
   gettingSick,
   healSick,
-} from "@/utils/types";
+} from "@/utils/events";
 
 //@TODO: Handle time as seconds or something? Or live with not super accurate milliseconds?
 // This would be much better as a class, but for fun and practice it's an object

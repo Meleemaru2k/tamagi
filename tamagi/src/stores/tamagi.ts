@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { produce } from "immer";
-import { userEvent, cpuEvent, userEvents } from "@/utils/types";
+import { userEvent, cpuEvent, userEvents } from "@/utils/events";
 import Tamagi from "@/components/game/display/tamagi";
 import { Sickness, Sicknesses } from "@/utils/sickness";
 import { SicknessTypes } from "@/utils/sickness";

@@ -1,4 +1,7 @@
+import { statSync } from "fs";
 import { Ran } from "./utlis";
+import { convertTime as ct } from "./utlis";
+import { ScriptKind } from "typescript";
 
 export enum TamagiEvos {
   Baby, //Green Slime
@@ -72,7 +75,8 @@ export interface TamagiType {
       value: Ran<101>;
     };
   };
-  evolution: (stats: TamagiStats) => TamagiEvos;
+  eventHandlers: any;
+  evolution: (stats: TamagiStats) => TamagiEvos | null;
   sprite: {
     position: { x: number; y: number };
   };
@@ -92,25 +96,33 @@ const tamagiTypes = new Map<TamagiEvos, TamagiType>([
       },
       tickEffect: {
         hunger: {
-          time: 5000,
+          time: ct(15, "s", "ms"),
           value: -2,
         },
         happiness: {
-          time: 5000,
+          time: ct(30, "s", "ms"),
           value: -2,
         },
         poop: {
-          time: 60000,
+          time: ct(10, "m", "ms"),
           value: 100,
         },
       },
+      eventHandlers: {},
       evolution: (stats: TamagiStats) => {
+        if (stats.age < ct(1, "h", "ms")) return null;
         switch (true) {
-          case stats.age > 1 &&
-            stats.wellFedTicks > 10 &&
-            stats.happyTicks > 10 &&
-            stats.dirtyTicks < 10 &&
-            stats.starvingTicks < 10:
+          case stats.dirtyTicks > ct(30, "m", "ms") ||
+            stats.starvingTicks > ct(30, "m", "ms"):
+            return TamagiEvos.Baby_BrownSlime;
+          case stats.wellFedTicks > ct(30, "m", "ms") &&
+            stats.sickTicks > ct(15, "m", "ms"):
+            return TamagiEvos.Baby_Bat;
+          case stats.wellFedTicks > ct(10, "m", "ms") &&
+            stats.happyTicks > ct(10, "m", "ms") &&
+            stats.dirtyTicks < ct(15, "m", "ms") &&
+            stats.starvingTicks < ct(15, "m", "ms"):
+            stats.sickTicks < ct(15, "m", "ms");
             return TamagiEvos.Baby_Rabbit;
           default:
             return TamagiEvos.Baby_Rat;
@@ -123,6 +135,7 @@ const tamagiTypes = new Map<TamagiEvos, TamagiType>([
   ],
 ]);
 
+// For now lets treat a tick as a gameloop update (every Second at the moment)
 type TamagiStats = {
   age: number;
   unhappyTicks: number;

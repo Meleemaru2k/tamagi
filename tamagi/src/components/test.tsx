@@ -2,7 +2,7 @@
 
 import { TamagiMinMax, useTamagi } from "@/stores/tamagi";
 import gameloop from "@/utils/gameloop";
-import { cpuEvent, userEvent, userEvents } from "@/utils/types";
+import { cpuEvent, userEvent, userEvents } from "@/utils/events";
 import { useDisplay } from "@/stores/display";
 import { useTamagiShell } from "@/stores/tamagiShell";
 
