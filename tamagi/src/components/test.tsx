@@ -1,6 +1,6 @@
 "use client";
 
-import { TamagiMinMax, useTamagi } from "@/stores/tamagi";
+import { useTamagi } from "@/stores/tamagi";
 import gameloop from "@/utils/gameloop";
 import { cpuEvent, userEvent, userEvents } from "@/utils/events";
 import { useDisplay } from "@/stores/display";
@@ -49,7 +49,7 @@ export default function Test() {
         <div className="flex flex-col [&_>div:nth-child(2n)]:pb-2 [&_>div:nth-child(2n)]:border-b-2 [&_>div:nth-child(2n)]:border-solid [&_>div:nth-child(2n)]:border-black">
           <div>Hunger</div>
           <div>
-            {tamagi.tamagi.hunger} / {TamagiMinMax.HungerMax}
+            {tamagi.tamagi.hunger} / {tamagi.tamagi.type.minMaxStats.hunger[0]}
           </div>
           <div>Current Event</div>
           <div>{tamagi.eventInProgress?.type ?? "none"}</div>

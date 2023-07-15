@@ -22,6 +22,7 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
       type: Sicknesses.get(SicknessTypes.Healthy) as Sickness,
       timeCreated: 0,
       timeHealed: 0,
+      actionsTakenSince: [],
     },
     poop: null,
     sleep: null,
@@ -75,7 +76,7 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
       })
     );
   },
-  increaseHunger: (hungerValue: number) => {
+  modifyHunger: (hungerValue: number) => {
     const newHunger = hungerValue + get().tamagi.hunger;
     get().setHunger(newHunger);
   },
@@ -95,12 +96,11 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
       })
     );
   },
-  increaseHappiness: (happinessValue: number) => {
+  modifyHappiness: (happinessValue: number) => {
     const newHappiness = happinessValue + get().tamagi.happiness;
     get().setHappiness(newHappiness);
   },
   // _______________________ Sick
-  //@TODO: Add Sickness Types?
   setSick: (type: SicknessTypes, time?: number) => {
     set(
       produce<iTamagiStore>((state) => {
@@ -108,6 +108,7 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
           type: Sicknesses.get(type) as Sickness,
           timeCreated: time ?? new Date().getTime(),
           timeHealed: null,
+          actionsTakenSince: [],
         };
       })
     );
@@ -117,6 +118,7 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
       produce<iTamagiStore>((state) => {
         if (state.tamagi.sick?.timeHealed === null) {
           state.tamagi.sick.timeHealed = new Date().getTime();
+          state.tamagi.sick.actionsTakenSince = [];
         }
       })
     );
@@ -147,12 +149,6 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
     const ongoingEvent = get().eventInProgress;
     const minMax = get().tamagi.type.minMaxStats;
 
-    /**
-     * This is going to become much bigger as evolved Tamagis
-     * will process events differently
-     * Some need more food, some need more sleep, some need more playtime... :)
-     * We'll build smaller functions that will take care of this later, for now this will do
-     */
     const evolveInto = get().tamagi.type.evolution(get().tamagiHistoryStats);
     if (evolveInto) {
       set(
@@ -171,7 +167,7 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
           if (time - ongoingEvent.timeCreated > ongoingEvent.time) {
             switch (ongoingEvent.type) {
               case userEvents.feed:
-                get().increaseHunger(20);
+                get().modifyHunger(20);
                 break;
               case userEvents.clean:
                 get().removePoop();
@@ -180,7 +176,7 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
                 get().removeSick();
                 break;
               case userEvents.play:
-                get().increaseHappiness(20);
+                get().modifyHappiness(20);
               default:
                 break;
             }
@@ -199,8 +195,8 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
       get().tamagi.sick?.timeHealed === null &&
       (time - get().lastUpdate.sicknessTick) / 1000 >= 30
     ) {
-      get().increaseHunger(-10);
-      get().increaseHappiness(-10);
+      get().modifyHunger(-10);
+      get().modifyHappiness(-10);
       get().updateLastUpdate({ ...get().lastUpdate, sicknessTick: time });
     }
 
@@ -210,9 +206,9 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
       get().tamagi.type.tickEffects.hunger.time
     ) {
       if (get().tamagi.hunger === minMax.hunger[0]) {
-        get().increaseHappiness(-10);
+        get().modifyHappiness(-10);
       }
-      get().increaseHunger(get().tamagi.type.tickEffects.hunger.value);
+      get().modifyHunger(get().tamagi.type.tickEffects.hunger.value);
       get().updateLastUpdate({ ...get().lastUpdate, hungerDecrease: time });
     }
 
@@ -221,9 +217,9 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
       get().tamagi.type.tickEffects.happiness.time
     ) {
       if (get().tamagi.happiness === minMax.happiness[0]) {
-        get().increaseHunger(-10);
+        get().modifyHunger(-10);
       }
-      get().increaseHappiness(get().tamagi.type.tickEffects.happiness.value);
+      get().modifyHappiness(get().tamagi.type.tickEffects.happiness.value);
       get().updateLastUpdate({ ...get().lastUpdate, happinessDecrease: time });
     }
 
@@ -283,9 +279,9 @@ interface iTamagiStore {
   tamagiHistoryStats: TamagiStats;
   setName: (n: string) => void;
   setHunger: (value: number) => void;
-  increaseHunger: (value: number) => void;
+  modifyHunger: (value: number) => void;
   setHappiness: (value: number) => void;
-  increaseHappiness: (value: number) => void;
+  modifyHappiness: (value: number) => void;
   setPoop: () => void;
   removePoop: () => void;
   setSick: (type: SicknessTypes, time?: number) => void;
@@ -298,8 +294,8 @@ interface iTamagiStore {
 
 export type publicTamagiStore = Pick<
   iTamagiStore,
-  | "increaseHunger"
-  | "increaseHappiness"
+  | "modifyHunger"
+  | "modifyHappiness"
   | "setPoop"
   | "removePoop"
   | "setSick"
@@ -313,7 +309,7 @@ interface TamagiLastUpdate {
   sicknessTick: number;
 }
 
-export type Tamagi = {
+export interface Tamagi {
   type: TamagiType;
   name: string;
   age: number;
@@ -323,6 +319,7 @@ export type Tamagi = {
     type: Sickness;
     timeCreated: number;
     timeHealed: number | null;
+    actionsTakenSince: userEvents[];
   };
   poop?: {
     type: number;
@@ -335,4 +332,4 @@ export type Tamagi = {
     timeHealed: number | null;
   } | null;
   dead: boolean;
-};
+}

@@ -59,3 +59,27 @@
 .eating {
   animation: eating 1s infinite;
 }
+
+@keyframes healing {
+  0% {
+    transform: scale(1, 1) rotate(0deg);
+    filter: hue-rotate(0deg);
+  }
+  25% {
+    left: -1px;
+  }
+  50% {
+    transform: scale(1.1, 1.1);
+    left: 0px;
+  }
+  75% {
+    left: 1px;
+  }
+  100% {
+    filter: hue-rotate(360deg);
+  }
+}
+
+.healing > * {
+  animation: healing 1s infinite;
+}

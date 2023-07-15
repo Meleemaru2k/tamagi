@@ -3,7 +3,7 @@ import { TamagiEvos, TamagiStats, TamagiType } from "./types";
 import { userEvents } from "@/utils/events";
 import { convertTime as ct } from "@/utils/utils";
 
-export const baby_0: TamagiType = {
+export const baby: TamagiType = {
   id: TamagiEvos.Baby,
   name: "Baby",
   idleAnimation: "breathing",
@@ -28,8 +28,18 @@ export const baby_0: TamagiType = {
     nextSicknessDelay: ct(15, "m", "ms"),
   },
   eventHandlers: {
-    [userEvents.feed]: () => {},
-    [userEvents.clean]: () => {},
+    [userEvents.feed]: (tamagiStore) => {
+      tamagiStore.modifyHunger(20);
+    },
+    [userEvents.play]: (tamagiStore) => {
+      tamagiStore.modifyHappiness(20);
+    },
+    [userEvents.clean]: (tamagiStore) => {
+      tamagiStore.removePoop();
+    },
+    [userEvents.healSick]: (tamagiStore) => {
+      tamagiStore.removeSick();
+    },
   },
   evolution: (stats: TamagiStats) => {
     if (stats.age < ct(1, "h", "ms")) return null;
@@ -52,5 +62,41 @@ export const baby_0: TamagiType = {
   },
   sprite: {
     position: getSpritePos(0, 8),
+  },
+};
+
+export const baby_rat = {
+  ...baby,
+  id: TamagiEvos.Baby_Rat,
+  name: "Baby Rat",
+  evolution: (stats: TamagiStats) => {
+    return null;
+  },
+};
+
+export const baby_bat = {
+  ...baby,
+  id: TamagiEvos.Baby_Bat,
+  name: "Baby Bat",
+  evolution: (stats: TamagiStats) => {
+    return null;
+  },
+};
+
+export const baby_brownSlime = {
+  ...baby,
+  id: TamagiEvos.Baby_BrownSlime,
+  name: "Baby Brown Slime",
+  evolution: (stats: TamagiStats) => {
+    return null;
+  },
+};
+
+export const baby_rabbit = {
+  ...baby,
+  id: TamagiEvos.Baby_Rabbit,
+  name: "Baby Rabbit",
+  evolution: (stats: TamagiStats) => {
+    return null;
   },
 };
