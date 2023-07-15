@@ -296,21 +296,21 @@ interface iTamagiStore {
   updateLastUpdate: (lastUpdate: TamagiLastUpdate) => void;
 }
 
+export type publicTamagiStore = Pick<
+  iTamagiStore,
+  | "increaseHunger"
+  | "increaseHappiness"
+  | "setPoop"
+  | "removePoop"
+  | "setSick"
+  | "removeSick"
+>;
+
 interface TamagiLastUpdate {
   time: number;
   hungerDecrease: number;
   happinessDecrease: number;
   sicknessTick: number;
-}
-
-export enum TamagiMinMax {
-  HungerMax = 100,
-  HungerMin = 0,
-  HappinessMax = 100,
-  HappinessMin = 0,
-  AgeMax = 100,
-  AgeMin = 0,
-  NextSicknessDelay = 100000,
 }
 
 export type Tamagi = {
