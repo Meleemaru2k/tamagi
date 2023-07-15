@@ -53,6 +53,11 @@ export interface TamagiType {
   id: TamagiEvos;
   name: string;
   idleAnimation: string;
+  minMaxStats: {
+    hunger: [number, number];
+    happiness: [number, number];
+    maxAge: number;
+  };
   tickEffect: {
     hunger: {
       time: number;
@@ -67,6 +72,7 @@ export interface TamagiType {
       value: Ran<101>;
     };
   };
+  evolution: (stats: TamagiStats) => TamagiEvos;
   sprite: {
     position: { x: number; y: number };
   };
@@ -79,6 +85,11 @@ const tamagiTypes = new Map<TamagiEvos, TamagiType>([
       id: TamagiEvos.Baby,
       name: "Baby",
       idleAnimation: "breathing",
+      minMaxStats: {
+        hunger: [0, 100],
+        happiness: [0, 100],
+        maxAge: 3,
+      },
       tickEffect: {
         hunger: {
           time: 5000,
@@ -93,12 +104,34 @@ const tamagiTypes = new Map<TamagiEvos, TamagiType>([
           value: 100,
         },
       },
+      evolution: (stats: TamagiStats) => {
+        switch (true) {
+          case stats.age > 1 &&
+            stats.wellFedTicks > 10 &&
+            stats.happyTicks > 10 &&
+            stats.dirtyTicks < 10 &&
+            stats.starvingTicks < 10:
+            return TamagiEvos.Baby_Rabbit;
+          default:
+            return TamagiEvos.Baby_Rat;
+        }
+      },
       sprite: {
         position: getSpritePos(0, 8),
       },
     },
   ],
 ]);
+
+type TamagiStats = {
+  age: number;
+  unhappyTicks: number;
+  happyTicks: number;
+  starvingTicks: number;
+  wellFedTicks: number;
+  dirtyTicks: number;
+  sickTicks: number;
+};
 
 export default tamagiTypes;
 
