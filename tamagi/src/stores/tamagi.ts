@@ -4,10 +4,11 @@ import { userEvent, cpuEvent, userEvents } from "@/utils/types";
 import Tamagi from "@/components/game/display/tamagi";
 import { Sickness, Sicknesses } from "@/utils/sickness";
 import { SicknessTypes } from "@/utils/sickness";
+import TamagiTypes, { TamagiEvos, TamagiType } from "@/utils/tamagiTypes";
 
 export const useTamagi = create<iTamagiStore>()((set, get) => ({
   tamagi: {
-    type: 0,
+    type: TamagiTypes.get(TamagiEvos.Baby) as TamagiType,
     name: "John",
     age: 0,
     hunger: 50,
@@ -20,6 +21,9 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
     poop: null,
     sleep: null,
     dead: false,
+  },
+  animation: {
+    type: "breathing",
   },
   /**
    * @description
@@ -59,10 +63,6 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
     const newHunger = hungerValue + get().tamagi.hunger;
     get().setHunger(newHunger);
   },
-  decreaseHunger: (hungerValue: number) => {
-    const newHunger = get().tamagi.hunger - hungerValue;
-    get().setHunger(newHunger);
-  },
   //_______________________ Happiness
   setHappiness: (happinessValue: number) => {
     set(
@@ -79,10 +79,6 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
   },
   increaseHappiness: (happinessValue: number) => {
     const newHappiness = happinessValue + get().tamagi.happiness;
-    get().setHappiness(newHappiness);
-  },
-  decreaseHappiness: (happinessValue: number) => {
-    const newHappiness = get().tamagi.happiness - happinessValue;
     get().setHappiness(newHappiness);
   },
   // _______________________ Sick
@@ -114,6 +110,10 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
   addEvent: (event: userEvent | cpuEvent) => {
     set(
       produce<iTamagiStore>((state) => {
+        //@TODO: Make a function that handles this  (setAnimationByEvent())
+        if (event.type === userEvents.feed) {
+          state.animation.type = "eating";
+        }
         state.eventInProgress = event;
       })
     );
@@ -121,6 +121,8 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
   clearEvent: () => {
     set(
       produce<iTamagiStore>((state) => {
+        //@TODO: Make a function that handles this (setAnimationByEvent())
+        state.animation.type = "breathing";
         state.eventInProgress = null;
       })
     );
@@ -139,7 +141,7 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
 
     // Event Handling
     if (ongoingEvent) {
-      switch (get().tamagi.type) {
+      switch (get().tamagi.type.id) {
         default:
         case TamagiEvos.Baby:
           if (time - ongoingEvent.timeCreated > ongoingEvent.time) {
@@ -166,22 +168,28 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
 
     // Hardcoded Actions
 
+    // @TODO: handle animations
+    // ...no implemented yet
+
     //handle sickness
     if (
       get().tamagi.sick?.timeHealed === null &&
       (time - get().lastUpdate.sicknessTick) / 1000 >= 30
     ) {
-      get().decreaseHunger(10);
-      get().decreaseHappiness(10);
+      get().increaseHunger(-10);
+      get().increaseHappiness(-10);
       get().updateLastUpdate({ ...get().lastUpdate, sicknessTick: time });
     }
 
     // Automatic Stat Decrease
-    if ((time - get().lastUpdate.hungerDecrease) / 1000 >= 5) {
+    if (
+      time - get().lastUpdate.hungerDecrease >=
+      get().tamagi.type.tickEffect.hunger.time
+    ) {
       if (get().tamagi.hunger === TamagiMinMax.HungerMin) {
-        get().decreaseHappiness(10);
+        get().increaseHappiness(-10);
       }
-      get().decreaseHunger(2);
+      get().increaseHunger(-2);
       get().updateLastUpdate({ ...get().lastUpdate, hungerDecrease: time });
     }
 
@@ -218,24 +226,18 @@ function checkEvolution() {
 
 //_______________________ Types _______________________//
 
-enum TamagiEvos {
-  Baby,
-  Child__Goblin,
-  Child__Ghost,
-  Child__Beetle,
-}
-
 interface iTamagiStore {
   tamagi: Tamagi;
   eventInProgress: userEvent | cpuEvent | null;
   lastUpdate: TamagiLastUpdate;
+  animation: {
+    type: string;
+  };
   setName: (n: string) => void;
   setHunger: (value: number) => void;
   increaseHunger: (value: number) => void;
-  decreaseHunger: (value: number) => void;
   setHappiness: (value: number) => void;
   increaseHappiness: (value: number) => void;
-  decreaseHappiness: (value: number) => void;
   setPoop: () => void;
   removePoop: () => void;
   setSick: (type: SicknessTypes, time?: number) => void;
@@ -264,7 +266,7 @@ export enum TamagiMinMax {
 }
 
 export type Tamagi = {
-  type: TamagiEvos;
+  type: TamagiType;
   name: string;
   age: number;
   hunger: number;

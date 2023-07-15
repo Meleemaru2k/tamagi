@@ -1,5 +1,4 @@
 "use client";
-"use client";
 import Button from "@/components/game/input/button";
 import ButtonRow from "@/components/game/input/buttonRow";
 import Test from "@/components/test";

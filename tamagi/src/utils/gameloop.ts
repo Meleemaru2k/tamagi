@@ -59,6 +59,7 @@ const gameloop = {
         break;
     }
   },
+  //These are for later, when we have stuff from "outside" like from playing a game with the Tamagi
   addCpuEvent: function (eventType: cpuEvents) {
     switch (eventType) {
       case cpuEvents.gettingSick:
