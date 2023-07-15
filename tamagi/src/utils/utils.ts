@@ -1,6 +1,8 @@
 // https://stackoverflow.com/questions/39494689/is-it-possible-to-restrict-number-to-a-certain-range
 // Typescript doesnt have interval-types yet so this is a workaround for number-ranges
-export type Ran<T extends number> = number extends T ? number : _Range<T, []>;
+export type NumberRange<T extends number> = number extends T
+  ? number
+  : _Range<T, []>;
 type _Range<T extends number, R extends unknown[]> = R["length"] extends T
   ? R[number]
   : _Range<T, [R["length"], ...R]>;
@@ -38,4 +40,12 @@ export function convertTime(
     default:
       return time;
   }
+}
+
+export function getSpritePos(
+  row: number,
+  col: number,
+  gridSize = { x: 16, y: 16 }
+) {
+  return { x: -row * gridSize.x, y: -col * gridSize.y };
 }
