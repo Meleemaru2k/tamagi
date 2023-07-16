@@ -53,6 +53,9 @@ export default function Button(props: ButtonProps) {
     if (displayStatus === "ON") {
       setMenuActive(!menuActive);
       if (menuActive) {
+        if (pageIndex === 3) {
+          setPageIndex(0);
+        }
         if (pageIndex === 0) {
           setPageIndex(buttonIndex + 1);
           setButtonIndex(0);
@@ -101,8 +104,8 @@ export default function Button(props: ButtonProps) {
       case "LEFT":
         return {
           bg: "bg-yellow-500 text-black",
-          text: "<",
-          menuActiveText: "<<",
+          text: "l",
+          menuActiveText: "L+",
           onClick: () => {
             if (pageIndex === 1 && menuActive) {
               decreaseStatIndex(1);
@@ -120,8 +123,8 @@ export default function Button(props: ButtonProps) {
       case "RIGHT":
         return {
           bg: "bg-red-500 text-white",
-          text: ">",
-          menuActiveText: ">>",
+          text: "R",
+          menuActiveText: "R+",
           onClick: () => {
             if (pageIndex === 1 && menuActive) {
               increaseStatIndex(1);

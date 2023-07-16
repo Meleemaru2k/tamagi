@@ -24,6 +24,10 @@ export default function CreditsPage(props: CreditsProps) {
       {displayStatus === "ON" ? (
         <>
           <h1>Credits Page</h1>
+          <button key={0} className="border-solid border-black border-2">
+            {" "}
+            Back To Main Menu
+          </button>
         </>
       ) : (
         ""

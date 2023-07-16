@@ -68,6 +68,13 @@ export default function Test() {
               ? tamagi.tamagi.sick.type.name
               : "false"}
           </div>
+          <div>
+            <h1>Navigation</h1>
+            <h5>O/X = Turn Display On/Off </h5>
+            <h5>+ = activate menu ++ select highlighted option </h5>
+            <h5>L = scroll page right L+ scroll menu up</h5>
+            <h5>R = scroll page right L+ scroll menu down</h5>
+          </div>
         </div>
       </div>
     </div>
