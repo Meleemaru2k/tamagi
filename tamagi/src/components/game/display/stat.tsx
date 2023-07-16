@@ -37,17 +37,9 @@ export default function Stat(props: StatProps) {
   return (
     <div className="flex h-[25px]">
       {isPopUpVisible ? (
-        <div
-          className="h-[75px] w-[300px] bg-blue-500 z-index-[1]"
-          onClick={() => setIsPopUpVisible(!isPopUpVisible)}
-        ></div>
+        <div className="h-[75px] w-[300px] bg-blue-500 z-index-[1]"></div>
       ) : (
-        <div
-          className={cn(statStyle(), "rounded w-[25px] h-[25px]")}
-          onClick={() => setIsPopUpVisible(!isPopUpVisible)}
-        >
-          H
-        </div>
+        <div className={cn(statStyle(), "rounded w-[25px] h-[25px]")}>H</div>
       )}
     </div>
   );

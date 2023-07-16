@@ -1,18 +1,10 @@
 "use client";
 import cn from "classnames";
 import { useDisplay } from "@/stores/display";
-import { useTamagi } from "@/stores/tamagi";
-import { useTamagiShell } from "@/stores/tamagiShell";
 export default function Page2(props: Page2Props) {
+  const buttonIndex = useDisplay().display.buttonIndex;
   const displayStatus = useDisplay().display.status;
-  //Tamagi Shell
-  const tamagiShellColour = useTamagiShell(
-    (state) => state.setTamagiShellColour
-  );
-  const pageIndex = useDisplay((state) => state.display.pageIndex);
-
-  //Tamagi
-  const setTamagiName = useTamagi().setName;
+  const menuActive = useDisplay().display.menuActive;
 
   const changeScreen = () => {
     switch (displayStatus) {
@@ -25,6 +17,8 @@ export default function Page2(props: Page2Props) {
     }
   };
 
+  const colours = ["red", "blue", "green", "back to main menu"];
+
   return (
     <div
       className={cn(
@@ -32,46 +26,27 @@ export default function Page2(props: Page2Props) {
         "h-[100%] w-[100%] flex flex-col items-center justify-between"
       )}
     >
-      {displayStatus === "ON" ? (
-        <>
-          <h1>Settings Page</h1>
-          <div className="border-[1px]">
-            name:
-            <input
-              className="border-[1px]"
-              onChange={(e) => {
-                setTamagiName(e.target.value);
-              }}
-            ></input>
-          </div>
-          <div
-            className="border-[1px] bg-red-500"
-            onClick={() => tamagiShellColour("red")}
-          >
-            Set Shell Colour To Red
-          </div>
-          <div
-            className="border-[1px] bg-blue-500"
-            onClick={() => tamagiShellColour("blue")}
-          >
-            Set Shell Colour To Blue
-          </div>
-          <div
-            className="border-[1px] bg-green-500 "
-            onClick={() => tamagiShellColour("green")}
-          >
-            Set Shell Colour To Green
-          </div>
-          <div
-            className="border-[1px] bg-teal-500"
-            onClick={() => tamagiShellColour("teal")}
-          >
-            Set Shell Colour To Teal
-          </div>
-        </>
-      ) : (
-        ""
-      )}
+      <h1>Settings Page</h1>
+      {displayStatus === "ON"
+        ? colours.map((colour, i) => {
+            if (i === buttonIndex) {
+              return (
+                <div
+                  key={i}
+                  className={`border-2 border-black border-solid bg-${colour}-500`}
+                >
+                  {i < 3 ? `Set Colour To ${colour}` : `${colour}`}
+                </div>
+              );
+            } else {
+              return (
+                <div key={i} className={`bg-${colour}-500`}>
+                  {i < 3 ? `Set Colour To ${colour}` : `${colour}`}
+                </div>
+              );
+            }
+          })
+        : ""}
     </div>
   );
 }

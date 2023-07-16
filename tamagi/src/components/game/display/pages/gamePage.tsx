@@ -6,6 +6,8 @@ import { useDisplay } from "@/stores/display";
 import { useTamagi } from "@/stores/tamagi";
 export default function GamePage(props: GamePageProps) {
   const displayStatus = useDisplay().display.status;
+  const buttonIndex = useDisplay().display.buttonIndex;
+  const menuActive = useDisplay().display.menuActive;
   const fullUpedness = useTamagi().tamagi.hunger;
   const tamagi = useTamagi();
 
@@ -75,19 +77,39 @@ export default function GamePage(props: GamePageProps) {
             </div>
           </div>
 
-          <div className="w-[100%] h-[100px]">
+          <div
+            className={`${
+              menuActive && buttonIndex === 0
+                ? "border-solid border-black border-2 w-[100%] h-[100px]"
+                : "w-[100%] h-[100px]"
+            }`}
+          >
             <StatRow
               stats={[
                 { statType: "FULLUPEDNESS" },
                 { statType: "WARNING" },
                 { statType: "STAT_VALUE" },
+                { statType: "STAT_VALUE" },
               ]}
             ></StatRow>
           </div>
           <Tamagi />
-          <StatRow
-            stats={[{ statType: "WARNING" }, { statType: "STAT_VALUE" }]}
-          ></StatRow>
+          <div
+            className={`${
+              menuActive && buttonIndex === 1
+                ? "border-solid border-black border-2 w-[100%] h-[100px]"
+                : "w-[100%] h-[100px]"
+            }`}
+          >
+            <StatRow
+              stats={[
+                { statType: "WARNING" },
+                { statType: "STAT_VALUE" },
+                { statType: "WARNING" },
+                { statType: "STAT_VALUE" },
+              ]}
+            ></StatRow>
+          </div>
         </div>
       ) : (
         ""

@@ -1,12 +1,10 @@
 "use client";
 import cn from "classnames";
 import { useDisplay } from "@/stores/display";
-import Page1 from "./gamePage";
-import Page2 from "./settingsPage";
-import Page3 from "./creditsPage";
 export default function Page0(props: Page0Props) {
   const displayStatus = useDisplay().display.status;
-  const setPageIndex = useDisplay().setPageIndex;
+  const buttonIndex = useDisplay().display.buttonIndex;
+  const menuActive = useDisplay().display.menuActive;
 
   const changeScreen = () => {
     switch (displayStatus) {
@@ -18,7 +16,7 @@ export default function Page0(props: Page0Props) {
         return "bg-gray-500";
     }
   };
-  const pages = ["Start", "Settings", "Credits"];
+  const pages = ["Start", "Settings", "Credits", "Cancel"];
   return (
     <div
       className={cn(
@@ -30,11 +28,22 @@ export default function Page0(props: Page0Props) {
         <>
           <h1>MAIN MENU</h1>
           {pages.map((page, i) => {
-            return (
-              <button key={i} onClick={() => setPageIndex(i + 1)}>
-                {page}
-              </button>
-            );
+            if (buttonIndex === i && menuActive === true) {
+              return (
+                <button key={i} className="border-solid border-black border-2">
+                  {page}
+                </button>
+              );
+            } else {
+              return (
+                <button
+                  className="border-solid border-red-500 border-2"
+                  key={i}
+                >
+                  {page}
+                </button>
+              );
+            }
           })}
         </>
       ) : (
