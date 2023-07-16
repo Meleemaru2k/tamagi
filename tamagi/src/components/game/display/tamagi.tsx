@@ -9,11 +9,16 @@ export default function Tamagi(props: TamagiProps) {
   const currentAnimation = useTamagi().animation.type;
 
   return (
-    <div className="bg-green-500 h-[200px] w-[200px] flex">
-      <div className="h-[160px] w-[160px] relative m-auto">
+    <div className="bg-white h-[200px] w-[200px] flex relative overflow-hidden rounded-md border-2 border-solid border-slate-300">
+      <img
+        alt="bg"
+        className="absolute h-full w-auto scale-[2] object-cover origin-bottom"
+        src="/bg_meadow.png"
+      ></img>
+      <div className="h-[160px] w-[160px] relative m-auto z-10">
         <div
           className={cn(
-            "absolute h-[48px] w-[48px] top-[calc(50%-24px)] left-[calc(50%-24px)] flex flex-row flex-nowrap overflow-visible",
+            "absolute h-[48px] w-[48px] top-[calc(90%-24px)] left-[calc(50%-24px)] flex flex-row flex-nowrap overflow-visible",
             currentAnimation
           )}
         >
