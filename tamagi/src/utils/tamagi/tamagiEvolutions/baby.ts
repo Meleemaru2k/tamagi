@@ -2,6 +2,7 @@ import { getSpritePos } from "@/utils/utils";
 import { TamagiEvos, TamagiStats, TamagiType } from "./types";
 import { userEvents } from "@/utils/events";
 import { convertTime as ct } from "@/utils/utils";
+import { PublicTamagiStore } from "@/stores/tamagi";
 
 export const baby: TamagiType = {
   id: TamagiEvos.Baby,
@@ -28,18 +29,36 @@ export const baby: TamagiType = {
     nextSicknessDelay: ct(15, "m", "ms"),
   },
   eventHandlers: {
-    [userEvents.feed]: (tamagiStore) => {
-      tamagiStore.modifyHunger(20);
+    [userEvents.feed]: (tamagiStore, time) => {
+      if (concludeEvent(tamagiStore, time)) {
+        //@Todo if already full give a penalty
+        //@Todo if too hungry only increase by 50%9
+        tamagiStore.modifyHunger(20);
+        tamagiStore.clearEvent();
+      }
     },
-    [userEvents.play]: (tamagiStore) => {
-      tamagiStore.modifyHappiness(20);
+    [userEvents.play]: (tamagiStore, time) => {
+      if (concludeEvent(tamagiStore, time)) {
+        //@TODO: If too hungry already clear the even and give a penalty
+        tamagiStore.modifyHappiness(10);
+        tamagiStore.modifyHunger(-5);
+        tamagiStore.clearEvent();
+      }
     },
-    [userEvents.clean]: (tamagiStore) => {
-      tamagiStore.removePoop();
+    [userEvents.clean]: (tamagiStore, time) => {
+      if (concludeEvent(tamagiStore, time)) {
+        tamagiStore.removePoop();
+        tamagiStore.clearEvent();
+      }
     },
-    [userEvents.healSick]: (tamagiStore) => {
-      tamagiStore.removeSick();
+    [userEvents.healSick]: (tamagiStore, time) => {
+      if (concludeEvent(tamagiStore, time)) {
+        //@TODO: If not sick make tamagi puke?
+        tamagiStore.removeSick();
+        tamagiStore.clearEvent();
+      }
     },
+    [userEvents.putToSleep]: (tamagiStore, time) => {},
   },
   evolution: (stats: TamagiStats) => {
     if (stats.age < ct(1, "h", "ms")) return null;
@@ -72,6 +91,9 @@ export const baby_rat = {
   evolution: (stats: TamagiStats) => {
     return null;
   },
+  sprite: {
+    position: getSpritePos(0, 1),
+  },
 };
 
 export const baby_bat = {
@@ -80,6 +102,9 @@ export const baby_bat = {
   name: "Baby Bat",
   evolution: (stats: TamagiStats) => {
     return null;
+  },
+  sprite: {
+    position: getSpritePos(4, 4),
   },
 };
 
@@ -90,6 +115,9 @@ export const baby_brownSlime = {
   evolution: (stats: TamagiStats) => {
     return null;
   },
+  sprite: {
+    position: getSpritePos(3, 8),
+  },
 };
 
 export const baby_rabbit = {
@@ -99,4 +127,18 @@ export const baby_rabbit = {
   evolution: (stats: TamagiStats) => {
     return null;
   },
+  sprite: {
+    position: getSpritePos(4, 1),
+  },
 };
+
+function concludeEvent(tamagiStore: PublicTamagiStore, time: number) {
+  if (
+    tamagiStore.eventInProgress &&
+    time - tamagiStore.eventInProgress.timeCreated >
+      tamagiStore.eventInProgress.time
+  ) {
+    return true;
+  }
+  return false;
+}

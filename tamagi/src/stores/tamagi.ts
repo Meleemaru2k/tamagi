@@ -11,7 +11,7 @@ import {
   TamagiType,
 } from "@/utils/tamagi/tamagiEvolutions/types";
 
-export const useTamagi = create<iTamagiStore>()((set, get) => ({
+export const useTamagi = create<PrivateTamagiStore>()((set, get) => ({
   tamagi: {
     type: TamagiTypes.get(TamagiEvos.Baby) as TamagiType,
     name: "John",
@@ -55,7 +55,7 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
   //_______________________ Actions _______________________//
   setName: (nameValue: string) => {
     set(
-      produce<iTamagiStore>((state) => {
+      produce<PrivateTamagiStore>((state) => {
         state.tamagi.name = nameValue;
       })
     );
@@ -63,7 +63,7 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
   //_______________________ Hunger
   setHunger: (hungerValue: number) => {
     set(
-      produce<iTamagiStore>((state) => {
+      produce<PrivateTamagiStore>((state) => {
         const minMax = state.tamagi.type.minMaxStats.hunger;
 
         if (hungerValue < minMax[0]) {
@@ -83,7 +83,7 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
   //_______________________ Happiness
   setHappiness: (happinessValue: number) => {
     set(
-      produce<iTamagiStore>((state) => {
+      produce<PrivateTamagiStore>((state) => {
         const minMax = state.tamagi.type.minMaxStats.happiness;
 
         if (happinessValue < minMax[0]) {
@@ -103,7 +103,7 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
   // _______________________ Sick
   setSick: (type: SicknessTypes, time?: number) => {
     set(
-      produce<iTamagiStore>((state) => {
+      produce<PrivateTamagiStore>((state) => {
         state.tamagi.sick = {
           type: Sicknesses.get(type) as Sickness,
           timeCreated: time ?? new Date().getTime(),
@@ -115,7 +115,7 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
   },
   removeSick: () => {
     set(
-      produce<iTamagiStore>((state) => {
+      produce<PrivateTamagiStore>((state) => {
         if (state.tamagi.sick?.timeHealed === null) {
           state.tamagi.sick.timeHealed = new Date().getTime();
           state.tamagi.sick.actionsTakenSince = [];
@@ -129,7 +129,7 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
   //_______________________ Event Handling _______________________//
   addEvent: (event: userEvent | cpuEvent) => {
     set(
-      produce<iTamagiStore>((state) => {
+      produce<PrivateTamagiStore>((state) => {
         state.eventInProgress = event;
         state.animation.type = getAnimation(event);
       })
@@ -137,7 +137,7 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
   },
   clearEvent: () => {
     set(
-      produce<iTamagiStore>((state) => {
+      produce<PrivateTamagiStore>((state) => {
         //@TODO: Make a function that handles this (setAnimationByEvent())
         state.eventInProgress = null;
         state.animation.type = getAnimation();
@@ -152,7 +152,7 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
     const evolveInto = get().tamagi.type.evolution(get().tamagiHistoryStats);
     if (evolveInto) {
       set(
-        produce<iTamagiStore>((state) => {
+        produce<PrivateTamagiStore>((state) => {
           state.tamagi.type = TamagiTypes.get(evolveInto) as TamagiType;
         })
       );
@@ -160,47 +160,25 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
     }
 
     // Event Handling
-    if (ongoingEvent) {
-      switch (get().tamagi.type.id) {
-        default:
-        case TamagiEvos.Baby:
-          if (time - ongoingEvent.timeCreated > ongoingEvent.time) {
-            switch (ongoingEvent.type) {
-              case userEvents.feed:
-                get().modifyHunger(20);
-                break;
-              case userEvents.clean:
-                get().removePoop();
-                break;
-              case userEvents.healSick:
-                get().removeSick();
-                break;
-              case userEvents.play:
-                get().modifyHappiness(20);
-              default:
-                break;
-            }
-            get().clearEvent();
-          }
-          break;
+    if (ongoingEvent !== null) {
+      const eventHandler = get().tamagi.type.eventHandlers[ongoingEvent.type];
+      if (eventHandler) {
+        eventHandler(get(), time);
       }
     }
 
-    // Hardcoded Actions
-
-    // @TODO: handle animations
-    // ...no implemented yet
-    //handle sickness
+    // Sickness Handling
     if (
       get().tamagi.sick?.timeHealed === null &&
       (time - get().lastUpdate.sicknessTick) / 1000 >= 30
     ) {
-      get().modifyHunger(-10);
-      get().modifyHappiness(-10);
+      const tickEffects = get().tamagi.sick.type.tickEffects;
+      get().modifyHunger(tickEffects.hunger);
+      get().modifyHappiness(tickEffects.happiness);
       get().updateLastUpdate({ ...get().lastUpdate, sicknessTick: time });
     }
 
-    // Automatic Stat Decrease
+    // Automatic Stat Modifier from TamagiType
     if (
       time - get().lastUpdate.hungerDecrease >=
       get().tamagi.type.tickEffects.hunger.time
@@ -243,7 +221,7 @@ export const useTamagi = create<iTamagiStore>()((set, get) => ({
   },
   updateLastUpdate: (lastUpdate: TamagiLastUpdate) => {
     set(
-      produce<iTamagiStore>((state) => {
+      produce<PrivateTamagiStore>((state) => {
         state.lastUpdate = lastUpdate;
       })
     );
@@ -259,7 +237,7 @@ function getAnimation(event?: generalEvent) {
     case userEvents.clean:
       return "cleaning";
     case userEvents.play:
-      return "playing";
+      return "playing_jumping";
     case userEvents.healSick:
       return "healing";
     default:
@@ -269,7 +247,19 @@ function getAnimation(event?: generalEvent) {
 
 //_______________________ Types _______________________//
 
-interface iTamagiStore {
+// Stuff you wanna expose to event handlers
+export interface PublicTamagiStore {
+  eventInProgress: userEvent | cpuEvent | null;
+  modifyHunger: (value: number) => void;
+  modifyHappiness: (value: number) => void;
+  setSick: (type: SicknessTypes, time?: number) => void;
+  removeSick: () => void;
+  setPoop: () => void;
+  removePoop: () => void;
+  addEvent: (event: userEvent | cpuEvent) => void;
+  clearEvent: () => void;
+}
+interface PrivateTamagiStore extends PublicTamagiStore {
   tamagi: Tamagi;
   eventInProgress: userEvent | cpuEvent | null;
   lastUpdate: TamagiLastUpdate;
@@ -287,20 +277,8 @@ interface iTamagiStore {
   setSick: (type: SicknessTypes, time?: number) => void;
   removeSick: () => void;
   update: (time: number) => void;
-  addEvent: (event: userEvent | cpuEvent) => void;
-  clearEvent: () => void;
   updateLastUpdate: (lastUpdate: TamagiLastUpdate) => void;
 }
-
-export type publicTamagiStore = Pick<
-  iTamagiStore,
-  | "modifyHunger"
-  | "modifyHappiness"
-  | "setPoop"
-  | "removePoop"
-  | "setSick"
-  | "removeSick"
->;
 
 interface TamagiLastUpdate {
   time: number;

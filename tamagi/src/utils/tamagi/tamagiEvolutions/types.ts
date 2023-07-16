@@ -1,6 +1,6 @@
 import { userEvents } from "@/utils/events";
 import { NumberRange } from "@/utils/utils";
-import { publicTamagiStore } from "@/stores/tamagi";
+import { PublicTamagiStore } from "@/stores/tamagi";
 
 export enum TamagiEvos {
   Baby, //Green Slime
@@ -86,8 +86,9 @@ export interface TamagiType {
     };
     nextSicknessDelay: number;
   };
-  eventHandlers: Partial<
-    Record<userEvents, (tamagiStore: publicTamagiStore) => void>
+  eventHandlers: Record<
+    userEvents,
+    (tamagiStore: PublicTamagiStore, time: number) => void
   >;
   evolution: (stats: TamagiStats) => TamagiEvos | null;
   sprite: {
