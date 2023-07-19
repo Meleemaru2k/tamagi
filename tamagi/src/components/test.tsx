@@ -1,9 +1,8 @@
 "use client";
 
-import { TamagiMinMax, useTamagi } from "@/stores/tamagi";
+import { useTamagi } from "@/stores/tamagi";
 import gameloop from "@/utils/gameloop";
-import { cpuEvent, userEvent, userEvents } from "@/utils/types";
-import { useDisplay } from "@/stores/display";
+import { userEvents } from "@/utils/events";
 import { useTamagiShell } from "@/stores/tamagiShell";
 
 export default function Test() {
@@ -32,24 +31,35 @@ export default function Test() {
         Set Shell Colour To Teal
       </div>
 
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 my-2 text-black [&_>*]:rounded-md [&_>*]:cursor-pointer text-center">
         <div
           className="p-2 bg-slate-200"
           onClick={() => gameloop.addUserEvent(userEvents.feed)}
         >
-          Dispatch Feed Event
+          Feed
         </div>
         <div
           className="p-2 bg-slate-200"
           onClick={() => gameloop.addUserEvent(userEvents.healSick)}
         >
-          Dispatch Heal Event
+          Heal
+        </div>
+        <div
+          className="p-2 bg-slate-200"
+          onClick={() => gameloop.addUserEvent(userEvents.play)}
+        >
+          Play
         </div>
 
         <div className="flex flex-col [&_>div:nth-child(2n)]:pb-2 [&_>div:nth-child(2n)]:border-b-2 [&_>div:nth-child(2n)]:border-solid [&_>div:nth-child(2n)]:border-black">
           <div>Hunger</div>
           <div>
-            {tamagi.tamagi.hunger} / {TamagiMinMax.HungerMax}
+            {tamagi.tamagi.hunger} / {tamagi.tamagi.type.minMaxStats.hunger[1]}
+          </div>
+          <div>Happyness</div>
+          <div>
+            {tamagi.tamagi.happiness} /{" "}
+            {tamagi.tamagi.type.minMaxStats.happiness[1]}
           </div>
           <div>Current Event</div>
           <div>{tamagi.eventInProgress?.type ?? "none"}</div>

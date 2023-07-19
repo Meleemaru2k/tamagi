@@ -6,9 +6,10 @@ import {
   userEvent,
   userEvents,
   feed,
-  gettingSick,
+  puke,
   healSick,
-} from "@/utils/types";
+  play,
+} from "@/utils/events";
 
 //@TODO: Handle time as seconds or something? Or live with not super accurate milliseconds?
 // This would be much better as a class, but for fun and practice it's an object
@@ -55,6 +56,13 @@ const gameloop = {
           ...healSick,
           timeCreated: new Date().getTime(),
         });
+        break;
+      case userEvents.play:
+        this.eventQueue.userEvents.push({
+          ...play,
+          timeCreated: new Date().getTime(),
+        });
+        break;
       default:
         break;
     }
@@ -62,9 +70,9 @@ const gameloop = {
   //These are for later, when we have stuff from "outside" like from playing a game with the Tamagi
   addCpuEvent: function (eventType: cpuEvents) {
     switch (eventType) {
-      case cpuEvents.gettingSick:
+      case cpuEvents.puke:
         this.eventQueue.cpuEvents.push({
-          ...gettingSick,
+          ...puke,
           timeCreated: new Date().getTime(),
         });
         break;

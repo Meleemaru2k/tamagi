@@ -1,4 +1,6 @@
-import { Ran } from "./utlis";
+import { userEvents } from "@/utils/events";
+import { NumberRange } from "@/utils/utils";
+import { PublicTamagiStore } from "@/stores/tamagi";
 
 export enum TamagiEvos {
   Baby, //Green Slime
@@ -45,6 +47,17 @@ export enum TamagiEvos {
   Mystic_PurpleSlime, // The rarest one!
 }
 
+// For now lets treat a tick as a gameloop update (every Second at the moment)
+export type TamagiStats = {
+  age: number;
+  unhappyTicks: number;
+  happyTicks: number;
+  starvingTicks: number;
+  wellFedTicks: number;
+  dirtyTicks: number;
+  sickTicks: number;
+};
+
 /**
  * @tickEffect.poop.value
  * This is a %-chance value that should be between 0 and 100
@@ -58,7 +71,7 @@ export interface TamagiType {
     happiness: [number, number];
     maxAge: number;
   };
-  tickEffect: {
+  tickEffects: {
     hunger: {
       time: number;
       value: number;
@@ -69,72 +82,16 @@ export interface TamagiType {
     };
     poop: {
       time: number;
-      value: Ran<101>;
+      value: NumberRange<101>;
     };
+    nextSicknessDelay: number;
   };
-  evolution: (stats: TamagiStats) => TamagiEvos;
+  eventHandlers: Record<
+    userEvents,
+    (tamagiStore: PublicTamagiStore, time: number) => void
+  >;
+  evolution: (stats: TamagiStats) => TamagiEvos | null;
   sprite: {
     position: { x: number; y: number };
   };
-}
-
-const tamagiTypes = new Map<TamagiEvos, TamagiType>([
-  [
-    TamagiEvos.Baby,
-    {
-      id: TamagiEvos.Baby,
-      name: "Baby",
-      idleAnimation: "breathing",
-      minMaxStats: {
-        hunger: [0, 100],
-        happiness: [0, 100],
-        maxAge: 3,
-      },
-      tickEffect: {
-        hunger: {
-          time: 5000,
-          value: -2,
-        },
-        happiness: {
-          time: 5000,
-          value: -2,
-        },
-        poop: {
-          time: 60000,
-          value: 100,
-        },
-      },
-      evolution: (stats: TamagiStats) => {
-        switch (true) {
-          case stats.age > 1 &&
-            stats.wellFedTicks > 10 &&
-            stats.happyTicks > 10 &&
-            stats.dirtyTicks < 10 &&
-            stats.starvingTicks < 10:
-            return TamagiEvos.Baby_Rabbit;
-          default:
-            return TamagiEvos.Baby_Rat;
-        }
-      },
-      sprite: {
-        position: getSpritePos(0, 8),
-      },
-    },
-  ],
-]);
-
-type TamagiStats = {
-  age: number;
-  unhappyTicks: number;
-  happyTicks: number;
-  starvingTicks: number;
-  wellFedTicks: number;
-  dirtyTicks: number;
-  sickTicks: number;
-};
-
-export default tamagiTypes;
-
-function getSpritePos(row: number, col: number) {
-  return { x: -row * 16, y: -col * 16 };
 }

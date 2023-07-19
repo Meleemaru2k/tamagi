@@ -22,9 +22,9 @@ export enum userEvents {
 }
 
 export enum cpuEvents {
-  gettingSick,
-  gettingBored,
-  pooping,
+  puke,
+  overfed,
+  exhausted,
 }
 
 // User Events
@@ -47,7 +47,7 @@ export const healSick: userEvent = {
 };
 
 export const play: userEvent = {
-  time: 6000,
+  time: 8000,
   type: userEvents.play,
   timeCreated: 0,
 };
@@ -59,15 +59,27 @@ export const putToSleep: userEvent = {
 };
 
 // CPU Events
-export const gettingSick: cpuEvent = {
+export const puke: cpuEvent = {
   time: 3000,
-  type: cpuEvents.gettingSick,
+  type: cpuEvents.puke,
+  timeCreated: 0,
+};
+
+export const overfed: cpuEvent = {
+  time: 3000,
+  type: cpuEvents.overfed,
+  timeCreated: 0,
+};
+
+export const exhausted: cpuEvent = {
+  time: 3000,
+  type: cpuEvents.exhausted,
   timeCreated: 0,
 };
 
 // All
 const events = {
   userEvents: [feed, clean, healSick, play, putToSleep],
-  cpuEvents: [gettingSick],
+  cpuEvents: [puke],
 };
 export default events;
