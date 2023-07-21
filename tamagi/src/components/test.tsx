@@ -50,6 +50,12 @@ export default function Test() {
         >
           Play
         </div>
+        <div
+          className="p-2 bg-slate-200"
+          onClick={() => gameloop.addUserEvent(userEvents.clean)}
+        >
+          Clean
+        </div>
 
         <div className="flex flex-col [&_>div:nth-child(2n)]:pb-2 [&_>div:nth-child(2n)]:border-b-2 [&_>div:nth-child(2n)]:border-solid [&_>div:nth-child(2n)]:border-black">
           <div>Hunger</div>
