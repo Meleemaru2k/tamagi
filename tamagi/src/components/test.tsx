@@ -56,6 +56,9 @@ export default function Test() {
         >
           Clean
         </div>
+        <div className="p-2 bg-slate-200" onClick={() => console.log(tamagi)}>
+          ConsoleLog Store
+        </div>
 
         <div className="flex flex-col [&_>div:nth-child(2n)]:pb-2 [&_>div:nth-child(2n)]:border-b-2 [&_>div:nth-child(2n)]:border-solid [&_>div:nth-child(2n)]:border-black">
           <div>Hunger</div>
@@ -67,6 +70,8 @@ export default function Test() {
             {tamagi.tamagi.happiness} /{" "}
             {tamagi.tamagi.type.minMaxStats.happiness[1]}
           </div>
+          <div>Poop</div>
+          <div>{tamagi.tamagi.poop.amount}</div>
           <div>Current Event</div>
           <div>{tamagi.eventInProgress?.type ?? "none"}</div>
           <div>Event-Progess:</div>

@@ -1,0 +1,33 @@
+@keyframes wipePoop {
+  0% {
+    transform: translateX(0);
+  }
+  40% {
+    transform: translateX(-5px) rotate(-1deg);
+  }
+  80% {
+    transform: translateX(5px) rotate(1deg);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes food {
+  0% {
+    transform: translateY(0) translateX(0px) rotate(0deg) scale(1);
+  }
+  40% {
+    transform: translateY(-2px) translateX(-2px) rotate(-3deg) scale(0.95);
+  }
+  80% {
+    transform: translateY(2px) translateX(2px) rotate(0deg);
+  }
+  100% {
+    transform: translateY(0) translateX(0px) rotate(0deg) scale(1);
+  }
+}
+
+.food {
+  animation: food 1s infinite;
+}
