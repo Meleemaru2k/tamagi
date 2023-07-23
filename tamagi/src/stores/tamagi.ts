@@ -236,7 +236,7 @@ export const useTamagi = create<PrivateTamagiStore>()((set, get) => ({
       get().tamagi.type.tickEffects.poop.time
     ) {
       const shouldPoop =
-        Math.floor(Math.random() * 100) >=
+        Math.floor(Math.random() * 100) <=
         get().tamagi.type.tickEffects.poop.value;
       if (shouldPoop) {
         get().addPoop();
