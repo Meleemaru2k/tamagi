@@ -174,6 +174,13 @@ export const useTamagi = create<PrivateTamagiStore>()((set, get) => ({
       })
     );
   },
+  evolve: (evo: TamagiEvos) => {
+    set(
+      produce<PrivateTamagiStore>((state) => {
+        state.tamagi.type = TamagiTypes.get(evo) as TamagiType;
+      })
+    );
+  },
   //_______________________ Updates _______________________//
   update: (time: number) => {
     const ongoingEvent = get().eventInProgress;
@@ -181,11 +188,7 @@ export const useTamagi = create<PrivateTamagiStore>()((set, get) => ({
 
     const evolveInto = get().tamagi.type.evolution(get().tamagiHistoryStats);
     if (evolveInto) {
-      set(
-        produce<PrivateTamagiStore>((state) => {
-          state.tamagi.type = TamagiTypes.get(evolveInto) as TamagiType;
-        })
-      );
+      get().evolve(evolveInto);
       return;
     }
 
@@ -320,6 +323,7 @@ interface PrivateTamagiStore extends PublicTamagiStore {
   removeSick: () => void;
   update: (time: number) => void;
   updateLastUpdate: (lastUpdate: TamagiLastUpdate) => void;
+  evolve: (evo: TamagiEvos) => void;
 }
 
 interface TamagiLastUpdate {
