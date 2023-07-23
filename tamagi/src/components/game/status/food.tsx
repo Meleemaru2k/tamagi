@@ -32,17 +32,15 @@ export default function Food() {
           left: `50%`,
         }}
       >
-        <div>
-          <img
-            src="/tamagis.png"
-            alt="tamagi"
-            className="object-none scale-[3] h-[16px] w-[16px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-            style={{
-              imageRendering: "pixelated",
-              objectPosition: `${spritePostion.x}px ${spritePostion.y}px`,
-            }}
-          ></img>
-        </div>
+        <img
+          src="/tamagis.png"
+          alt="tamagi"
+          className="object-none scale-[3] h-[16px] w-[16px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+          style={{
+            imageRendering: "pixelated",
+            objectPosition: `${spritePostion.x}px ${spritePostion.y}px`,
+          }}
+        ></img>
       </div>
     );
   } else {

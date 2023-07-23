@@ -1,16 +1,20 @@
-@keyframes wipePoop {
+@keyframes poop {
   0% {
-    transform: translateX(0);
+    transform: scale(1) translateY(0px) rotate(0deg);
   }
   40% {
-    transform: translateX(-5px) rotate(-1deg);
+    transform: scale(1, 0.9) translateY(2px) rotate(1deg);
   }
   80% {
-    transform: translateX(5px) rotate(1deg);
+    transform: scale(1.05, 1) translateY(0px) rotate(-1deg);
   }
   100% {
-    transform: translateX(0);
+    transform: scale(1) translateY(0px) rotate(0deg);
   }
+}
+
+.poop {
+  animation: poop 1s linear infinite;
 }
 
 @keyframes food {

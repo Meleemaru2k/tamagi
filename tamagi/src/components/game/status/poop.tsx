@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
+import "./status.css";
 import cn from "classnames";
 import { useTamagi } from "@/stores/tamagi";
 import { getSpritePos } from "@/utils/utils";
@@ -16,7 +17,7 @@ export default function Poop() {
   for (let i = 0; i < poopAmount && i < 3; i++) {
     p.push(
       <div
-        className="absolute w-[48px] h-[48px]"
+        className="absolute w-[48px] h-[48px] poop"
         style={{
           bottom: `${poopPositionsByIndex[i].y}px`,
           left: `${poopPositionsByIndex[i].x}px`,
