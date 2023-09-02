@@ -28,8 +28,10 @@ Tick -> One Time-Unit of the Game has passed (at the moment 1 Tick ~= 1 Second)
 - Cleaning ✅
   - Animation
 - Sleep-Mode
+  - Pause Game 
   - Animation
-  - Resume
+  - Resume Game
+    - Process Ticks gone by, but make it slowmo (e.g. 1 minute in Sleep = 1 Tick instead of 60) 
 
 ### Game-Events
 #### Automatic Stat-Updates
