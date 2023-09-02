@@ -19,26 +19,36 @@
 - Playing ✅
   - Animation ✅
 - Cleaning ✅
-  - Animation ✅
+  - Animation
 - Sleep-Mode
   - Animation
   - Resume
 
 ### Game-Events
 #### Automatic Stat-Updates
-- Getting hungry ✅
-- Getting sick ✅
-- Pooping ✅
+Tick -> Each Tick conditions get checked and modifications to stats get applied when certain conditions are met
+Each of these Ticks will have a cooldown (defined by the Tamagi-Evolution).  
+Example: After a Tamagi got sick and then healed, it won't get sick again in the next 30 minutes.
+
+- Hunger Tick ✅
+- Getting-Sick Tick ✅
+    - Sickness Tick ✅
+- Happyiness Tick ✅
+- Pooping Tick ✅
   
 #### Evolution
 - Evolve when conditions met
   - Animation
 
 ### UX/UI
+- Display
+    - Tamagi-Sprites ✅
+    - Background ✅
+    - Animations/Events ✅
 - Buttons for Interactions
 - Tamagotchi-Shell
   - Change Tamagotchi Shell Color/Design
-- Animations and Effects
+- Animations and Effects (for Buttons etc)
 
 ### Other
 - Debugging
