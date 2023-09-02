@@ -25,7 +25,12 @@ export default function Display(props: DisplayProps) {
     }
   };
   return (
-    <div className={cn(changeScreen(), "h-[500px] w-[500px]")}>
+    <div
+      className={cn(
+        changeScreen(),
+        "h-[500px] w-[500px] rounded-lg overflow-hidden"
+      )}
+    >
       {pageArray[pageIndex].el}
     </div>
   );

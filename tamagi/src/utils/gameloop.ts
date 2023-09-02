@@ -9,6 +9,7 @@ import {
   puke,
   healSick,
   play,
+  clean,
 } from "@/utils/events";
 
 //@TODO: Handle time as seconds or something? Or live with not super accurate milliseconds?
@@ -60,6 +61,11 @@ const gameloop = {
       case userEvents.play:
         this.eventQueue.userEvents.push({
           ...play,
+          timeCreated: new Date().getTime(),
+        });
+      case userEvents.clean:
+        this.eventQueue.userEvents.push({
+          ...clean,
           timeCreated: new Date().getTime(),
         });
         break;

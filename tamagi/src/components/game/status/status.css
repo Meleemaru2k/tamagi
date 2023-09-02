@@ -1,0 +1,37 @@
+@keyframes poop {
+  0% {
+    transform: scale(1) translateY(0px) rotate(0deg);
+  }
+  40% {
+    transform: scale(1, 0.9) translateY(2px) rotate(1deg);
+  }
+  80% {
+    transform: scale(1.05, 1) translateY(0px) rotate(-1deg);
+  }
+  100% {
+    transform: scale(1) translateY(0px) rotate(0deg);
+  }
+}
+
+.poop {
+  animation: poop 1s linear infinite;
+}
+
+@keyframes food {
+  0% {
+    transform: translateY(0) translateX(0px) rotate(0deg) scale(1);
+  }
+  40% {
+    transform: translateY(-2px) translateX(-2px) rotate(-3deg) scale(0.95);
+  }
+  80% {
+    transform: translateY(2px) translateX(2px) rotate(0deg);
+  }
+  100% {
+    transform: translateY(0) translateX(0px) rotate(0deg) scale(1);
+  }
+}
+
+.food {
+  animation: food 1s infinite;
+}

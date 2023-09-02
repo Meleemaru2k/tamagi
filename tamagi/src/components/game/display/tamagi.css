@@ -28,7 +28,7 @@
   }
 }
 
-.breathing > * {
+.breathing > #tamagiBody {
   animation: breathing 4s infinite;
 }
 
@@ -56,7 +56,7 @@
   }
 }
 
-.eating > * {
+.eating > #tamagiBody {
   animation: eating 1s infinite;
 }
 
@@ -91,7 +91,7 @@
   }
 }
 
-.healing > * {
+.healing > #tamagiBody {
   animation: healing 0.5s infinite linear;
 }
 
@@ -147,6 +147,6 @@
   }
 }
 
-.playing_jumping > * {
+.playing_jumping > #tamagiBody {
   animation: 2.5s linear 0s 3 playing_jumping;
 }

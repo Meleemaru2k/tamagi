@@ -24,8 +24,17 @@ export const useTamagi = create<PrivateTamagiStore>()((set, get) => ({
       timeHealed: 0,
       actionsTakenSince: [],
     },
-    poop: null,
-    sleep: null,
+    poop: {
+      type: 0,
+      timeCreated: 0,
+      timeHealed: 0,
+      amount: 0,
+    },
+    sleep: {
+      type: 0,
+      timeCreated: 0,
+      timeHealed: 0,
+    },
     dead: false,
   },
   tamagiHistoryStats: {
@@ -50,6 +59,7 @@ export const useTamagi = create<PrivateTamagiStore>()((set, get) => ({
     hungerDecrease: 0,
     happinessDecrease: 0,
     sicknessTick: 0,
+    poop: 0,
   },
   eventInProgress: null,
   //_______________________ Actions _______________________//
@@ -124,8 +134,28 @@ export const useTamagi = create<PrivateTamagiStore>()((set, get) => ({
     );
   },
   // _______________________ Poop
-  setPoop: () => {},
-  removePoop: () => {},
+  addPoop: () => {
+    set(
+      produce<PrivateTamagiStore>((state) => {
+        state.tamagi.poop = {
+          type: 0,
+          timeCreated: new Date().getTime(),
+          timeHealed: null,
+          amount: state.tamagi.poop?.amount + 1,
+        };
+      })
+    );
+  },
+  removePoop: () => {
+    set(
+      produce<PrivateTamagiStore>((state) => {
+        if (state.tamagi.poop?.timeHealed === null) {
+          state.tamagi.poop.timeHealed = new Date().getTime();
+          state.tamagi.poop.amount = 0;
+        }
+      })
+    );
+  },
   //_______________________ Event Handling _______________________//
   addEvent: (event: userEvent | cpuEvent) => {
     set(
@@ -144,6 +174,13 @@ export const useTamagi = create<PrivateTamagiStore>()((set, get) => ({
       })
     );
   },
+  evolve: (evo: TamagiEvos) => {
+    set(
+      produce<PrivateTamagiStore>((state) => {
+        state.tamagi.type = TamagiTypes.get(evo) as TamagiType;
+      })
+    );
+  },
   //_______________________ Updates _______________________//
   update: (time: number) => {
     const ongoingEvent = get().eventInProgress;
@@ -151,11 +188,7 @@ export const useTamagi = create<PrivateTamagiStore>()((set, get) => ({
 
     const evolveInto = get().tamagi.type.evolution(get().tamagiHistoryStats);
     if (evolveInto) {
-      set(
-        produce<PrivateTamagiStore>((state) => {
-          state.tamagi.type = TamagiTypes.get(evolveInto) as TamagiType;
-        })
-      );
+      get().evolve(evolveInto);
       return;
     }
 
@@ -201,6 +234,18 @@ export const useTamagi = create<PrivateTamagiStore>()((set, get) => ({
       get().updateLastUpdate({ ...get().lastUpdate, happinessDecrease: time });
     }
 
+    if (
+      time - get().lastUpdate.poop >=
+      get().tamagi.type.tickEffects.poop.time
+    ) {
+      const shouldPoop =
+        Math.floor(Math.random() * 100) <=
+        get().tamagi.type.tickEffects.poop.value;
+      if (shouldPoop) {
+        get().addPoop();
+        get().updateLastUpdate({ ...get().lastUpdate, poop: time });
+      }
+    }
     // Sickness stuff
     // We'll have some more fun logic here based on other stats later - the hungrier & sadder the tamagi is, the more likely it is to get sick
     const getSick =
@@ -254,7 +299,7 @@ export interface PublicTamagiStore {
   modifyHappiness: (value: number) => void;
   setSick: (type: SicknessTypes, time?: number) => void;
   removeSick: () => void;
-  setPoop: () => void;
+  addPoop: () => void;
   removePoop: () => void;
   addEvent: (event: userEvent | cpuEvent) => void;
   clearEvent: () => void;
@@ -272,12 +317,13 @@ interface PrivateTamagiStore extends PublicTamagiStore {
   modifyHunger: (value: number) => void;
   setHappiness: (value: number) => void;
   modifyHappiness: (value: number) => void;
-  setPoop: () => void;
+  addPoop: () => void;
   removePoop: () => void;
   setSick: (type: SicknessTypes, time?: number) => void;
   removeSick: () => void;
   update: (time: number) => void;
   updateLastUpdate: (lastUpdate: TamagiLastUpdate) => void;
+  evolve: (evo: TamagiEvos) => void;
 }
 
 interface TamagiLastUpdate {
@@ -285,6 +331,7 @@ interface TamagiLastUpdate {
   hungerDecrease: number;
   happinessDecrease: number;
   sicknessTick: number;
+  poop: number;
 }
 
 export interface Tamagi {
@@ -299,15 +346,16 @@ export interface Tamagi {
     timeHealed: number | null;
     actionsTakenSince: userEvents[];
   };
-  poop?: {
+  poop: {
     type: number;
     timeCreated: number;
     timeHealed: number | null;
-  } | null;
-  sleep?: {
+    amount: number;
+  };
+  sleep: {
     type: number;
     timeCreated: number;
     timeHealed: number | null;
-  } | null;
+  };
   dead: boolean;
 }
