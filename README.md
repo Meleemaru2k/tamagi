@@ -1,5 +1,6 @@
 ﻿# Tamagi #
 # A Tamagotchi Clone #
+Tick -> One Time-Unit of the Game has passed (at the moment 1 Tick ~= 1 Second)
 
 ## Base-Features
 
@@ -10,6 +11,12 @@
 - Sickness-Chance ✅
 - Poop-Chance ✅
 - Evolution-Conditions ✅
+- Min/Max-Stats ✅
+- Tick-Effects
+  - How often an Effect will occur (every X-Timeunits) ✅
+  - If an effect occured, how long will it be ignored until it can happen again (e.g. after Tamagi has pooped we skip the Poop-Tick-Effect for 10 Minutes) ✅
+- Stat-Tracking
+    - Keep track of stats e.g. how may ticks Tamagi was sick 
 
 #### Interactions
 - Feeding ✅
@@ -26,7 +33,7 @@
 
 ### Game-Events
 #### Automatic Stat-Updates
-Tick -> Each Tick conditions get checked and modifications to stats get applied when certain conditions are met
+Each Tick conditions get checked and modifications to stats get applied when certain conditions are met
 Each of these Ticks will have a cooldown (defined by the Tamagi-Evolution).  
 Example: After a Tamagi got sick and then healed, it won't get sick again in the next 30 minutes.
 
