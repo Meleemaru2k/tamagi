@@ -64,13 +64,15 @@ Example: After a Tamagi got sick and then healed, it won't get sick again in the
 
  
 ## Planned Features
-#### Game Saves (Cookies)
+### Game Saves (Cookies)
 - Saving the game
 - Loading the game
 Later on -> Export/Import Saves as JSON
 
-#### Other Events
-- Puking when overfed oder very fed & just gotten sick
+### Other Events
+- Puking when very fed & sick and then fed again (huge decrease Hunger & Happiness)
+- Exhausted when played too much (increased decrease in Hunger/Happiness for a while)
+- Overfed when fed and then hunger would be above max value (decrease in Happiness & Insta-Poop...or maybe chance of puking?)
  
 
 
