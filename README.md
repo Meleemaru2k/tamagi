@@ -13,13 +13,16 @@
 
 #### Interactions
 - Feeding ✅
- - Animation ✅
+  - Animation ✅
 - Healing ✅
- - Animation ✅
+  - Animation ✅
 - Playing ✅
- - Animation ✅
+  - Animation ✅
 - Cleaning ✅
- - Animation ✅
+  - Animation ✅
+- Sleep-Mode
+  - Animation
+  - Resume
 
 ### Game-Events
 #### Automatic Stat-Updates
@@ -29,17 +32,18 @@
   
 #### Evolution
 - Evolve when conditions met
- - Animation
+  - Animation
 
 ### UX/UI
 - Buttons for Interactions
 - Tamagotchi-Shell
- - Change Tamagotchi Shell Color/Design
+  - Change Tamagotchi Shell Color/Design
 - Animations and Effects
 
 ### Other
 - Debugging
- - Set Tamagi-Evolution by Presets
+  - Set Tamagi-Evolution by Presets
+  - Show Stats/Ticks/Etc...
 
  
 ## Planned Features
