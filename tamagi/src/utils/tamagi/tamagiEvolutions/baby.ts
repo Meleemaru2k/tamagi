@@ -1,5 +1,5 @@
 import { getSpritePos } from "@/utils/utils";
-import { TamagiEvos, TamagiStats, TamagiType } from "./types";
+import { TamagiEvos, TamagiStats, TamagiType } from "./@types";
 import { userEvents } from "@/utils/events";
 import { convertTime as ct } from "@/utils/utils";
 import { PublicTamagiStore } from "@/stores/tamagi";

@@ -1,4 +1,4 @@
-import { TamagiEvos, TamagiType } from "./tamagiEvolutions/types";
+import { TamagiEvos, TamagiType } from "./tamagiEvolutions/@types";
 import {
   baby,
   baby_rat,

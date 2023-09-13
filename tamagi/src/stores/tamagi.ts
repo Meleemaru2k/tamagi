@@ -9,7 +9,7 @@ import {
   TamagiEvos,
   TamagiStats,
   TamagiType,
-} from "@/utils/tamagi/tamagiEvolutions/types";
+} from "@/utils/tamagi/tamagiEvolutions/@types";
 
 export const useTamagi = create<PrivateTamagiStore>()((set, get) => ({
   tamagi: {
