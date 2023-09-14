@@ -95,3 +95,90 @@ export interface TamagiType {
     position: { x: number; y: number };
   };
 }
+
+export interface TamagiJSON {
+  id: TamagiEvos | string;
+  name: string;
+  gfx: {
+    base: TamagiJSON_Animation;
+    idle: TamagiJSON_Animation;
+    sick: TamagiJSON_Animation;
+    eating: TamagiJSON_Animation;
+    sleeping: TamagiJSON_Animation;
+  };
+  minMaxStats: {
+    age: Omit<TamagiJSON_MinMaxStat, "min">;
+    hunger: TamagiJSON_MinMaxStat;
+    happiness: TamagiJSON_MinMaxStat;
+    poop: TamagiJSON_MinMaxStat;
+  };
+  tickEffects: {
+    hunger: TamagiJSON_TickEffect;
+    happiness: TamagiJSON_TickEffect;
+    /**
+     * Value = % chance to poop
+     * Time = Delay to next poop after pooping
+     */
+    poop: TamagiJSON_TickEffect;
+    /**
+     * Value = % chance to get sick
+     * Time = Delay to next sickness-roll after healed sickness
+     */
+    sick: TamagiJSON_TickEffect;
+  };
+  eventHandlers: Record<
+    userEvents,
+    (tamagiStore: PublicTamagiStore, time: number) => void
+  >;
+  evolutionRequirements: TamagiJSON_EvoltionRequirement;
+  evolution: (stats: TamagiStats) => TamagiEvos | null;
+  sprite: {
+    position: { x: number; y: number };
+  };
+}
+
+export interface TamagiJSON_MinMaxStat {
+  min: number;
+  max: number;
+}
+
+export interface TamagiJSON_Animation {
+  file: string;
+  frames: number[];
+}
+
+export interface TamagiJSON_TickEffect {
+  default: {
+    time: number;
+    value: number;
+  };
+  sick?: {
+    time: number;
+    value: number;
+  };
+  unhappy?: {
+    time: number;
+    value: number;
+  };
+  happy?: {
+    time: number;
+    value: number;
+  };
+  wellFed?: {
+    time: number;
+    value: number;
+  };
+  starving?: {
+    time: number;
+    value: number;
+  };
+}
+
+export interface TamagiJSON_EvoltionRequirement {
+  age: number;
+  happinessTicks: [number, number]; // range, but if max = 0 then there is no max limit
+  sicknessTicks: [number, number];
+  starvingTicks: [number, number];
+  wellFedTicks: [number, number];
+  dirtyTicks: [number, number];
+}
